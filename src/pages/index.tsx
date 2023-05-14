@@ -1,19 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import * as fonts from 'lib/fonts';
-import { useCurrentHeight } from 'lib/hooks';
+import { useHistoriesStore } from 'lib/stores';
 
 export default function Home() {
-  const height = useCurrentHeight();
+  const { value, percentage, drink, reset } = useHistoriesStore((state) => {
+    const value = state.calcTotalValue();
 
-  const [value, setValue] = useState(0);
-  const [percentage, setPercentage] = useState(0);
+    return {
+      value,
+      percentage: Math.round((value / state.target) * 100),
+      drink: (s = 1) => {
+        const v = Math.round(3350 / 60);
+        state.drink(state.calcTotalValue() + v !== v * s ? v * s : v);
+      },
+      reset: state.reset,
+    };
+  });
 
   useEffect(() => {
     const id = setInterval(() => {
       const s = new Date().getSeconds();
-      setValue(Math.round((3350 / 60) * s));
-      setPercentage(Math.round((125 / 60) * s));
+      if (s === 0) return reset();
+      drink(s);
     }, 1000);
 
     return () => clearInterval(id);
@@ -22,7 +31,7 @@ export default function Home() {
   return (
     <>
       <main className={`h-full relative ${fonts.nunito.className}`}>
-        <div className="grid grid-rows-5 w-full h-full">
+        <div className="grid grid-rows-5 w-full h-full fixed inset-0">
           <div
             className="bg-teal-100 wave h-[115%] z-40"
             style={{
@@ -56,26 +65,21 @@ export default function Home() {
 
         <div className="fixed inset-0 flex items-center justify-center z-[60] h-full w-full">
           <div
-            className="absolute top-0 right-0 left-0 bg-white transition-all h-full wave"
+            className="absolute top-0 right-0 left-0 bg-white h-full wave transition-all duration-1000 ease-linear"
             style={{
               animationPlayState: percentage >= 100 ? 'stopped' : 'running',
               maxHeight: 100 - Math.min(percentage, 100) + '%',
             }}
           >
-            <div
-              className="h-screen w-full text-center flex items-center justify-center flex-col"
-              style={{
-                height: height > 0 ? `calc(var(${height * 0.01 + 'px'}, 1vh) * 100)` : '100vh', // safari
-              }}
-            >
-              <h1 className="text-7xl font-extrabold text-neutral-200">{value}ml</h1>
-              <p className="text-2xl text-neutral-300">{percentage}% of your goal</p>
+            <div className="w-full text-center flex items-center justify-center flex-col h-full fixed inset-0">
+              <h1 className="tabular-nums text-7xl font-extrabold text-neutral-200">{value}ml</h1>
+              <p className="tabular-nums text-2xl text-neutral-300">{percentage}% of your goal</p>
             </div>
           </div>
 
           <div className="text-center">
-            <h1 className="text-7xl font-extrabold text-teal-600">{value}ml</h1>
-            <p className="text-2xl text-teal-500">{percentage}% of your goal</p>
+            <h1 className="tabular-nums text-7xl font-extrabold text-teal-600">{value}ml</h1>
+            <p className="tabular-nums text-2xl text-teal-500">{percentage}% of your goal</p>
           </div>
         </div>
       </main>
