@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Nunito } from 'next/font/google';
 
+import * as fonts from 'lib/fonts';
 import { useCurrentHeight } from 'lib/hooks';
-
-const nunito = Nunito({ subsets: ['latin'], weight: ['500', '800'] });
 
 export default function Home() {
   const height = useCurrentHeight();
 
-  const [value, setValue] = useState(3350);
-  const [percentage, setPercentage] = useState(50);
+  const [value, setValue] = useState(0);
+  const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -23,43 +21,64 @@ export default function Home() {
 
   return (
     <>
-      <main className={`h-full flex items-center justify-center relative ${nunito.className}`}>
-        <div
-          className="absolute top-0 right-0 left-0 bg-white transition-all h-full max-h-[var(--height)] overflow-hidden wave"
-          style={
-            {
-              '--animation-play-state': percentage >= 100 ? 'stopped' : 'running',
-              '--height': 100 - Math.min(percentage, 100) + '%',
-            } as React.CSSProperties
-          }
-        >
+      <main className={`h-full relative ${fonts.nunito.className}`}>
+        <div className="grid grid-rows-5 w-full h-full">
           <div
-            className="h-screen w-full text-center flex items-center justify-center flex-col"
-            style={
-              {
-                '--vh': height * 0.01 + 'px',
-                height: height > 0 ? 'calc(var(--vh, 1vh) * 100)' : '100vh',
-              } as React.CSSProperties
-            }
+            className="bg-teal-100 wave h-[115%] z-40"
+            style={{
+              animationDelay: '-0.5s',
+              animationPlayState: percentage < 80 ? 'stopped' : 'running',
+            }}
+          />
+          <div
+            className="bg-teal-200 wave h-[115%] z-30"
+            style={{
+              animationDelay: '-1s',
+              animationPlayState: percentage < 60 ? 'stopped' : 'running',
+            }}
+          />
+          <div
+            className="bg-teal-300 wave h-[115%] z-20"
+            style={{
+              animationDelay: '-1.5s',
+              animationPlayState: percentage < 40 ? 'stopped' : 'running',
+            }}
+          />
+          <div
+            className="bg-teal-400 wave h-[115%] z-10"
+            style={{
+              animationDelay: '-2s',
+              animationPlayState: percentage < 20 ? 'stopped' : 'running',
+            }}
+          />
+          <div className="bg-teal-500" />
+        </div>
+
+        <div className="fixed inset-0 flex items-center justify-center z-[60] h-full w-full">
+          <div
+            className="absolute top-0 right-0 left-0 bg-white transition-all h-full wave"
+            style={{
+              animationPlayState: percentage >= 100 ? 'stopped' : 'running',
+              maxHeight: 100 - Math.min(percentage, 100) + '%',
+            }}
           >
-            <h1 className="text-7xl font-extrabold text-neutral-200">{value}ml</h1>
-            <p className="text-2xl mt-2 text-neutral-300">{percentage}%</p>
+            <div
+              className="h-screen w-full text-center flex items-center justify-center flex-col"
+              style={{
+                height: height > 0 ? `calc(var(${height * 0.01 + 'px'}, 1vh) * 100)` : '100vh', // safari
+              }}
+            >
+              <h1 className="text-7xl font-extrabold text-neutral-200">{value}ml</h1>
+              <p className="text-2xl text-neutral-300">{percentage}% of your goal</p>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <h1 className="text-7xl font-extrabold text-teal-600">{value}ml</h1>
+            <p className="text-2xl text-teal-500">{percentage}% of your goal</p>
           </div>
         </div>
-
-        <div className="text-center">
-          <h1 className="text-7xl font-extrabold text-teal-600">{value}ml</h1>
-          <p className="text-2xl text-teal-500">{percentage}% of your goal</p>
-        </div>
       </main>
-
-      <div className="fixed w-full bottom-[4vh] left-0 flex justify-center">
-        <button className="rounded-full h-16 w-16 bg-teal-700 text-teal-300 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-10 h-10">
-            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-          </svg>
-        </button>
-      </div>
     </>
   );
 }

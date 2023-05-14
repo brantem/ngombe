@@ -8,26 +8,11 @@ body,
   height: 100%;
 }
 
-main {
-  background: linear-gradient(to top,
-      theme(colors.teal.500),
-      theme(colors.teal.500) 20%,
-      theme(colors.teal.400) 20%,
-      theme(colors.teal.400) 40%,
-      theme(colors.teal.300) 40%,
-      theme(colors.teal.300) 60%,
-      theme(colors.teal.200) 60%,
-      theme(colors.teal.200) 80%,
-      theme(colors.teal.100) 80%,
-      theme(colors.teal.100))
-}
-
 .wave {
   animation-direction: alternate;
   animation-duration: 2.5s;
   animation-iteration-count: infinite;
   animation-name: wave;
-  animation-play-state: var(--animation-play-state);
   animation-timing-function: ease-in-out;
 }
 
