@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Waves from 'components/Waves';
 import Background from 'components/Background';
 import Header from 'components/Header';
 import Stats from 'components/Stats';
 import Footer from 'components/Footer';
+import TargetModal from 'components/modals/TargetModal';
 
 import * as fonts from 'lib/fonts';
 import { useHistoriesStore } from 'lib/stores';
@@ -19,6 +20,8 @@ export default function Home() {
       reset: state.reset,
     };
   });
+
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -38,7 +41,7 @@ export default function Home() {
         <div className="fixed inset-0 z-[60] h-full w-full">
           <Background>
             <div className="fixed inset-0 grid grid-rows-3">
-              <Header isBackground />
+              <Header isBackground onTargetClick={() => setIsOpen((prev) => !prev)} />
 
               <Stats isBackground />
 
@@ -47,7 +50,7 @@ export default function Home() {
           </Background>
 
           <div className="grid grid-rows-3 h-full">
-            <Header />
+            <Header onTargetClick={() => setIsOpen((prev) => !prev)} />
 
             <Stats />
 
@@ -55,6 +58,8 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      <TargetModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 }

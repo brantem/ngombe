@@ -4,8 +4,9 @@ import { History } from 'types/history';
 
 interface HistoriesState {
   target: number;
-  histories: History[];
+  setTarget(target: number): void;
 
+  histories: History[];
   calcTotalValue(): number;
   drink(value: number): void;
   reset(): void;
@@ -13,8 +14,11 @@ interface HistoriesState {
 
 export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
   target: 2612,
-  histories: [],
+  setTarget(target) {
+    set({ target });
+  },
 
+  histories: [],
   calcTotalValue() {
     return get().histories.reduce((value, history) => value + history.value, 0);
   },

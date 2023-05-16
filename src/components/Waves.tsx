@@ -33,7 +33,12 @@ const Waves = () => {
           animationPlayState: percentage < 20 ? 'stopped' : 'running',
         }}
       />
-      <div className="bg-teal-500" style={{ animationDelay: '-2.5s' }} />
+      <div
+        className="bg-teal-500"
+        style={{
+          animationDelay: '-2.5s',
+        }}
+      />
     </div>
   );
 };

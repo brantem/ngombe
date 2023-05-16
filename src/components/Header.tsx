@@ -1,12 +1,32 @@
 import { cn } from 'lib/helpers';
 import { useHistoriesStore } from 'lib/stores';
 
-type HeaderProps = {
+type TargetProps = React.ComponentPropsWithoutRef<'button'> & {
   isBackground?: boolean;
 };
 
-const Header = ({ isBackground }: HeaderProps) => {
+const Target = ({ isBackground, ...props }: TargetProps) => {
   const target = useHistoriesStore((state) => state.target);
+
+  return (
+    <button
+      className={cn(
+        'px-3 py-1 rounded-full border-2 outline-none',
+        isBackground ? 'border-neutral-500 text-neutral-500' : 'border-teal-500 text-teal-500'
+      )}
+      {...props}
+    >
+      {target}ml
+    </button>
+  );
+};
+
+type HeaderProps = {
+  isBackground?: boolean;
+  onTargetClick: () => void;
+};
+
+const Header = ({ isBackground, onTargetClick }: HeaderProps) => {
   return (
     <header className="w-full px-4 pt-4">
       <div className="max-w-lg w-full mx-auto flex justify-between font-bold">
@@ -18,14 +38,8 @@ const Header = ({ isBackground }: HeaderProps) => {
         >
           History
         </button>
-        <span
-          className={cn(
-            'px-3 py-1 rounded-full border-2',
-            isBackground ? 'border-neutral-500 text-neutral-500' : 'border-teal-500 text-teal-500'
-          )}
-        >
-          {target}ml
-        </span>
+
+        <Target isBackground={isBackground} onClick={onTargetClick} />
       </div>
     </header>
   );
