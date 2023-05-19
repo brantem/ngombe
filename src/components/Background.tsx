@@ -1,10 +1,11 @@
 import { cn } from 'lib/helpers';
-import { useHistoriesStore } from 'lib/stores';
+import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
 type BackgroundProps = React.ComponentPropsWithoutRef<'div'>;
 
 const Background = ({ className, ...props }: BackgroundProps) => {
-  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / state.target) * 100));
+  const target = useTargetStore((state) => state.target);
+  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / target) * 100));
 
   return (
     <div

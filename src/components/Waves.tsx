@@ -1,7 +1,8 @@
-import { useHistoriesStore } from 'lib/stores';
+import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
 const Waves = () => {
-  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / state.target) * 100));
+  const target = useTargetStore((state) => state.target);
+  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / target) * 100));
 
   return (
     <div className="grid grid-rows-5 w-full h-full fixed inset-0">

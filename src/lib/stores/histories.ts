@@ -3,21 +3,16 @@ import { create } from 'zustand';
 import { History } from 'types/history';
 
 interface HistoriesState {
-  target: number;
-  setTarget(target: number): void;
-
   histories: History[];
   calcTotalValue(): number;
   drink(value: number): void;
   reset(): void;
+
+  isModalOpen: boolean;
+  setIsModalOpen(isModalOpen: boolean): void;
 }
 
 export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
-  target: 2612,
-  setTarget(target) {
-    set({ target });
-  },
-
   histories: [],
   calcTotalValue() {
     return get().histories.reduce((value, history) => value + history.value, 0);
@@ -27,5 +22,10 @@ export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
   },
   reset() {
     set({ histories: [] });
+  },
+
+  isModalOpen: false,
+  setIsModalOpen(isModalOpen) {
+    set({ isModalOpen });
   },
 }));

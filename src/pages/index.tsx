@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Waves from 'components/Waves';
 import Background from 'components/Background';
 import Header from 'components/Header';
 import Stats from 'components/Stats';
 import Footer from 'components/Footer';
+import HistoriesModal from 'components/modals/HistoriesModal';
 import TargetModal from 'components/modals/TargetModal';
 
 import * as fonts from 'lib/fonts';
-import { useHistoriesStore } from 'lib/stores';
+import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
 export default function Home() {
+  const target = useTargetStore((state) => state.target);
   const { drink, reset } = useHistoriesStore((state) => {
     return {
       drink: (s = 1) => {
-        const v = Math.round(3350 / 60);
+        const v = Math.round(target / 60);
         state.drink(state.calcTotalValue() + v !== v * s ? v * s : v);
       },
       reset: state.reset,
     };
   });
-
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -41,7 +41,7 @@ export default function Home() {
         <div className="fixed inset-0 z-[60] h-full w-full">
           <Background>
             <div className="fixed inset-0 grid grid-rows-3">
-              <Header isBackground onTargetClick={() => setIsOpen((prev) => !prev)} />
+              <Header isBackground />
 
               <Stats isBackground />
 
@@ -50,7 +50,7 @@ export default function Home() {
           </Background>
 
           <div className="grid grid-rows-3 h-full">
-            <Header onTargetClick={() => setIsOpen((prev) => !prev)} />
+            <Header />
 
             <Stats />
 
@@ -59,7 +59,8 @@ export default function Home() {
         </div>
       </main>
 
-      <TargetModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <HistoriesModal />
+      <TargetModal />
     </>
   );
 }

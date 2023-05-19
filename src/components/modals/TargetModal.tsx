@@ -1,21 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 
-import { useHistoriesStore } from 'lib/stores';
+import { useTargetStore } from 'lib/stores';
 import { useDebounce } from 'lib/hooks';
 import * as fonts from 'lib/fonts';
 
 const MAX = 99999;
 
-type TargetModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-const TargetModal = ({ isOpen, onClose }: TargetModalProps) => {
-  const { target, setTarget } = useHistoriesStore((state) => ({
+const TargetModal = () => {
+  const { target, setTarget, isOpen, onClose } = useTargetStore((state) => ({
     target: state.target,
     setTarget: state.setTarget,
+    isOpen: state.isModalOpen,
+    onClose: () => state.setIsModalOpen(false),
   }));
 
   const [value, setValue] = useState<string>();
@@ -39,7 +36,7 @@ const TargetModal = ({ isOpen, onClose }: TargetModalProps) => {
       className="fixed right-0 top-0 left-0 z-[100]"
     >
       <div className="w-full max-w-lg mx-auto relative h-16">
-        <Dialog.Panel className={`absolute top-[100%] right-4 md:right-0 ${fonts.nunito.className}`}>
+        <Dialog.Panel className={`absolute top-[100%] right-0 ${fonts.nunito.className}`}>
           <div className="bg-white shadow-sm rounded-full p-2 flex items-center space-x-1 border border-neutral-100">
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-white h-9 w-9 pb-[2px] bg-teal-500"
