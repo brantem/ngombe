@@ -13,11 +13,13 @@ const HistoriesModal = () => {
     onClose: () => state.setIsModalOpen(false),
   }));
 
+  const percentage = Math.round((totalValue / target) * 100);
+
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 z-[100] flex items-end">
       <div className="fixed inset-0 bg-black/5" aria-hidden="true" />
 
-      <div className="max-h-[90%] h-full w-full max-w-lg mx-auto">
+      <div className="max-h-[90%] h-[40rem] w-full max-w-lg mx-auto">
         <Dialog.Panel className={`h-full w-full ${fonts.nunito.className}`}>
           <div className="relative bg-white shadow-sm rounded-t-xl space-x-1 border border-neutral-100 h-full w-full overflow-hidden flex flex-col">
             <button className="absolute top-4 right-4" onClick={onClose}>
@@ -36,7 +38,7 @@ const HistoriesModal = () => {
             <div className="pt-4 text-center">
               <h1 className="text-2xl font-extrabold">{dayjs().format('DD MMM YYYY')}</h1>
               <p className="text-neutral-400 mt-1">
-                {totalValue}/{target}ml &#183; {Math.round((totalValue / target) * 100)}%
+                {totalValue}/{target}ml &#183; {percentage}%
               </p>
             </div>
 
@@ -49,7 +51,7 @@ const HistoriesModal = () => {
               </button>
             </div>
 
-            <ul className="space-y-3 overflow-y-auto">
+            <ul className="space-y-3 overflow-y-auto pb-3">
               {histories.map((history, i) => (
                 <li key={history.timestamp}>
                   <div className="px-4 flex justify-between items-center">
@@ -59,7 +61,7 @@ const HistoriesModal = () => {
                     </span>
                     <span className="text-neutral-400">{dayjs(history.timestamp).format('H:mm')}</span>
                   </div>
-                  {i !== histories.length && <hr className="mt-3 w-[85%] mx-auto" />}
+                  {i !== histories.length - 1 && <hr className="mt-3 w-[85%] mx-auto" />}
                 </li>
               ))}
             </ul>
