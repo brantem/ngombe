@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import Waves from 'components/Waves';
 import Background from 'components/Background';
 import Header from 'components/Header';
@@ -9,30 +7,8 @@ import HistoriesModal from 'components/modals/HistoriesModal';
 import TargetModal from 'components/modals/TargetModal';
 
 import * as fonts from 'lib/fonts';
-import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
 export default function Home() {
-  const target = useTargetStore((state) => state.target);
-  const { drink, reset } = useHistoriesStore((state) => {
-    return {
-      drink: (s = 1) => {
-        const v = Math.round(target / 60);
-        state.drink(state.calcTotalValue() + v !== v * s ? v * s : v);
-      },
-      reset: state.reset,
-    };
-  });
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      const s = new Date().getSeconds();
-      if (s === 0) return reset();
-      drink(s);
-    }, 1000);
-
-    return () => clearInterval(id);
-  }, []);
-
   return (
     <>
       <main className={`h-full relative ${fonts.nunito.className}`}>

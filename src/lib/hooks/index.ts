@@ -15,3 +15,5 @@ export const useDebounce = <T extends any>(value: T, delay: number): T => {
 
   return debouncedValue;
 };
+
+export * from 'lib/hooks/useModal';

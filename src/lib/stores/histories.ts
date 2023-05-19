@@ -7,9 +7,6 @@ interface HistoriesState {
   calcTotalValue(): number;
   drink(value: number): void;
   reset(): void;
-
-  isModalOpen: boolean;
-  setIsModalOpen(isModalOpen: boolean): void;
 }
 
 export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
@@ -22,10 +19,5 @@ export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
   },
   reset() {
     set({ histories: [] });
-  },
-
-  isModalOpen: false,
-  setIsModalOpen(isModalOpen) {
-    set({ isModalOpen });
   },
 }));

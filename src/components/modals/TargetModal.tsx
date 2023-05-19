@@ -2,17 +2,16 @@ import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 
 import { useTargetStore } from 'lib/stores';
-import { useDebounce } from 'lib/hooks';
+import { useDebounce, useModal } from 'lib/hooks';
 import * as fonts from 'lib/fonts';
 
 const MAX = 99999;
 
 const TargetModal = () => {
-  const { target, setTarget, isOpen, onClose } = useTargetStore((state) => ({
+  const modal = useModal('target');
+  const { target, setTarget } = useTargetStore((state) => ({
     target: state.target,
     setTarget: state.setTarget,
-    isOpen: state.isModalOpen,
-    onClose: () => state.setIsModalOpen(false),
   }));
 
   const [value, setValue] = useState<string>();
@@ -28,10 +27,10 @@ const TargetModal = () => {
 
   return (
     <Dialog
-      open={isOpen}
+      open={modal.isOpen}
       onClose={() => {
         setValue(undefined);
-        onClose();
+        modal.onClose();
       }}
       className="fixed right-0 top-0 left-0 z-[100]"
     >
