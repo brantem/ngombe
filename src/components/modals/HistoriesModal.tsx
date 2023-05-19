@@ -2,6 +2,7 @@ import { Dialog } from '@headlessui/react';
 import dayjs from 'dayjs';
 
 import * as fonts from 'lib/fonts';
+import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
 import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
@@ -17,14 +18,21 @@ const HistoriesModal = () => {
   const keys = Object.keys(histories);
 
   const percentage = Math.round((totalValue / target) * 100);
+  const showWave = percentage > 5;
 
   return (
     <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[100] flex items-end">
       <div className="fixed inset-0 bg-black/5" aria-hidden="true" />
 
-      <div className="max-h-[90%] h-[40rem] w-full max-w-lg mx-auto">
+      <div className={cn('max-h-[90%] h-[40rem] w-full max-w-lg mx-auto transition-all', showWave && 'pb-4')}>
         <Dialog.Panel className={`h-full w-full ${fonts.nunito.className}`}>
-          <div className="relative bg-white shadow-sm rounded-t-xl border border-neutral-100 h-full w-full overflow-hidden flex flex-col">
+          <div
+            className={cn(
+              'relative bg-white shadow-sm rounded-t-xl border border-neutral-100 h-full w-full overflow-hidden flex flex-col',
+              showWave && 'wave'
+            )}
+            style={{ animationDuration: '2.5s' }}
+          >
             <button className="absolute top-4 right-4" onClick={modal.onClose}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +68,7 @@ const HistoriesModal = () => {
             {keys.length === 0 ? (
               <div className="flex items-center justify-center flex-1 text-neutral-300">Nothing to see here</div>
             ) : (
-              <ul className="space-y-3 overflow-y-auto pb-3">
+              <ul className={cn('space-y-3 overflow-y-auto', showWave ? 'pb-12' : 'pb-3')}>
                 {keys
                   .sort((a, b) => parseInt(a) - parseInt(b))
                   .map((key, i) => (

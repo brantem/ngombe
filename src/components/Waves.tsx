@@ -9,35 +9,35 @@ const Waves = () => {
       <div
         className="bg-teal-100 wave h-[115%] z-40"
         style={{
-          animationDelay: '-0.5s',
+          animationDuration: '1.75s',
           animationPlayState: percentage < 80 ? 'stopped' : 'running',
         }}
       />
       <div
         className="bg-teal-200 wave h-[115%] z-30"
         style={{
-          animationDelay: '-1s',
+          animationDuration: '2s',
           animationPlayState: percentage < 60 ? 'stopped' : 'running',
         }}
       />
       <div
         className="bg-teal-300 wave h-[115%] z-20"
         style={{
-          animationDelay: '-1.5s',
+          animationDuration: '2.25s',
           animationPlayState: percentage < 40 ? 'stopped' : 'running',
         }}
       />
       <div
         className="bg-teal-400 wave h-[115%] z-10"
         style={{
-          animationDelay: '-2s',
+          animationDuration: '2.5s',
           animationPlayState: percentage < 20 ? 'stopped' : 'running',
         }}
       />
       <div
         className="bg-teal-500"
         style={{
-          animationDelay: '-2.5s',
+          animationDuration: '2.75s',
         }}
       />
     </div>
