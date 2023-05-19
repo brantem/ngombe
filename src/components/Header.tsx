@@ -1,11 +1,11 @@
 import { cn } from 'lib/helpers';
 import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
-type HistoryButtonProps = {
+type HistoriesButtonProps = {
   isBackground?: boolean;
 };
 
-const HistoryButton = ({ isBackground }: HistoryButtonProps) => {
+const HistoriesButton = ({ isBackground }: HistoriesButtonProps) => {
   const onClick = useHistoriesStore((state) => () => state.setIsModalOpen(true));
 
   return (
@@ -16,7 +16,7 @@ const HistoryButton = ({ isBackground }: HistoryButtonProps) => {
       )}
       onClick={onClick}
     >
-      History
+      Histories
     </button>
   );
 };
@@ -52,7 +52,7 @@ const Header = ({ isBackground }: HeaderProps) => {
   return (
     <header className="w-full px-4 pt-4">
       <div className="max-w-lg w-full mx-auto flex justify-between font-bold">
-        <HistoryButton isBackground={isBackground} />
+        <HistoriesButton isBackground={isBackground} />
 
         <TargetButton isBackground={isBackground} />
       </div>

@@ -39,7 +39,7 @@ const TargetModal = () => {
         <Dialog.Panel className={`absolute top-[100%] right-0 ${fonts.nunito.className}`}>
           <div className="bg-white shadow-sm rounded-full p-2 flex items-center space-x-1 border border-neutral-100">
             <button
-              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-white h-9 w-9 pb-[2px] bg-teal-500"
+              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-teal-500 h-9 w-9 pb-[2px] bg-teal-100"
               onClick={() => {
                 const v = parseInt(value || target.toString());
                 if (isNaN(v) || v === 0) return;
@@ -56,7 +56,7 @@ const TargetModal = () => {
               max={MAX}
             />
             <button
-              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-white h-9 w-9 pb-[2px] bg-teal-500"
+              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-teal-500 h-9 w-9 pb-[2px] bg-teal-100"
               onClick={() => {
                 const v = parseInt(value || target.toString());
                 if (isNaN(v) || v >= MAX) return;
