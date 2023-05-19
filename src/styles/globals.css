@@ -13,6 +13,9 @@ body,
   animation-iteration-count: infinite;
   animation-name: wave;
   animation-timing-function: linear;
+
+  /* this line resolves the glitching issue in full-screen mode (possibly by forcing GPU rendering) */
+  will-change: transform;
 }
 
 /*

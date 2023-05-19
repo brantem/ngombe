@@ -1,9 +1,11 @@
-import { cn } from 'lib/helpers';
+import { useCurrentHeight } from 'lib/hooks';
 import { useTargetStore, useHistoriesStore } from 'lib/stores';
+import { cn } from 'lib/helpers';
 
 type BackgroundProps = React.ComponentPropsWithoutRef<'div'>;
 
-const Background = ({ className, ...props }: BackgroundProps) => {
+const Background = ({ className, children, ...props }: BackgroundProps) => {
+  const height = useCurrentHeight();
   const target = useTargetStore((state) => state.target);
   const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / target) * 100));
 
@@ -18,7 +20,14 @@ const Background = ({ className, ...props }: BackgroundProps) => {
         animationPlayState: percentage >= 100 ? 'stopped' : 'running',
         maxHeight: 100 - Math.min(percentage, 100) + '%',
       }}
-    />
+    >
+      <div
+        className="fixed inset-0 grid grid-rows-3 h-screen w-screen"
+        style={{ height: `calc(${height * 0.01 + 'px'} * 100)` } /* safari moment */}
+      >
+        {children}
+      </div>
+    </div>
   );
 };
 

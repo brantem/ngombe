@@ -17,13 +17,11 @@ export default function Home() {
 
         <div className="fixed inset-0 z-[60] h-full w-full">
           <Background>
-            <div className="fixed inset-0 grid grid-rows-3">
-              <Header isBackground />
+            <Header isBackground />
 
-              <Stats isBackground />
+            <Stats isBackground />
 
-              <Footer isBackground />
-            </div>
+            <Footer isBackground />
           </Background>
 
           <div className="grid grid-rows-3 h-full">
