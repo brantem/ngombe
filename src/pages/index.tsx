@@ -3,6 +3,7 @@ import Background from 'components/Background';
 import Header from 'components/Header';
 import Stats from 'components/Stats';
 import Footer from 'components/Footer';
+import DrinkModal from 'components/modals/DrinkModal';
 import HistoriesModal from 'components/modals/HistoriesModal';
 import TargetModal from 'components/modals/TargetModal';
 
@@ -35,6 +36,7 @@ export default function Home() {
         </div>
       </main>
 
+      <DrinkModal />
       <HistoriesModal />
       <TargetModal />
     </>

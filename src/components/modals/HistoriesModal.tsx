@@ -7,11 +7,14 @@ import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
 const HistoriesModal = () => {
   const modal = useModal('histories');
+  const drinkModal = useModal('drink');
   const target = useTargetStore((state) => state.target);
-  const { histories, totalValue } = useHistoriesStore((state) => ({
+  const { histories, remove, totalValue } = useHistoriesStore((state) => ({
     histories: state.histories,
+    remove: state.remove,
     totalValue: state.calcTotalValue(),
   }));
+  const keys = Object.keys(histories);
 
   const percentage = Math.round((totalValue / target) * 100);
 
@@ -43,7 +46,10 @@ const HistoriesModal = () => {
             </div>
 
             <div className="flex justify-center mx-auto mt-4 mb-6">
-              <button className="flex items-center rounded-full bg-teal-100 text-teal-500 pl-2 pr-3 py-1 text-sm">
+              <button
+                className="flex items-center rounded-full bg-teal-100 text-teal-500 pl-2 pr-3 py-1 text-sm"
+                onClick={drinkModal.onOpen}
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                   <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
                 </svg>
@@ -51,22 +57,39 @@ const HistoriesModal = () => {
               </button>
             </div>
 
-            {histories.length === 0 ? (
+            {keys.length === 0 ? (
               <div className="flex items-center justify-center flex-1 text-neutral-300">Nothing to see here</div>
             ) : (
               <ul className="space-y-3 overflow-y-auto pb-3">
-                {histories.map((history, i) => (
-                  <li key={history.timestamp}>
-                    <div className="px-4 flex justify-between items-center">
-                      <span>
-                        <span className="font-bold text-teal-500 text-lg">{history.value}ml</span>{' '}
-                        <span className="text-neutral-300">+{Math.round((history.value / target) * 100)}%</span>
-                      </span>
-                      <span className="text-neutral-400">{dayjs(history.timestamp).format('H:mm')}</span>
-                    </div>
-                    {i !== histories.length - 1 && <hr className="mt-3 w-[85%] mx-auto" />}
-                  </li>
-                ))}
+                {keys
+                  .sort((a, b) => parseInt(a) - parseInt(b))
+                  .map((key, i) => (
+                    <li key={key}>
+                      <div className="px-4 flex justify-between items-center">
+                        <span>
+                          <span className="font-bold text-teal-500 text-lg">{histories[key]}ml</span>{' '}
+                          <span className="text-neutral-300">+{Math.round((histories[key] / target) * 100)}%</span>
+                        </span>
+                        <div className="space-x-3 flex items-center">
+                          <span className="text-neutral-400">{dayjs(parseInt(key)).format('H:mm')}</span>
+                          <button
+                            className="rounded-full h-6 w-6 bg-rose-100 text-rose-500 flex items-center justify-center"
+                            onClick={() => remove(key)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="w-5 h-5"
+                            >
+                              <path d="M6.75 9.25a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      {i !== keys.length - 1 && <hr className="mt-3 w-[85%] mx-auto" />}
+                    </li>
+                  ))}
                 <li className="text-center text-neutral-300">That&apos;s all!</li>
               </ul>
             )}

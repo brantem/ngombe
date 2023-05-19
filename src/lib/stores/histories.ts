@@ -1,23 +1,35 @@
 import { create } from 'zustand';
 
-import { History } from 'types/history';
-
 interface HistoriesState {
-  histories: History[];
+  histories: Record<string, number>;
   calcTotalValue(): number;
-  drink(value: number): void;
+  drink(timestamp: number, value: number): void;
+  remove(timestamp: string): void;
   reset(): void;
 }
 
 export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
-  histories: [],
+  histories: {},
   calcTotalValue() {
-    return get().histories.reduce((value, history) => value + history.value, 0);
+    const { histories } = get();
+    return Object.keys(histories).reduce((value, key) => value + histories[key], 0);
   },
-  drink(value) {
-    set((state) => ({ histories: [...state.histories, { value, timestamp: Date.now() }] }));
+  drink(timestamp, value) {
+    set((state) => {
+      const histories = state.histories;
+      const key = timestamp.toString();
+      histories[key] = (histories[key] || 0) + value;
+      return { histories };
+    });
+  },
+  remove(timestamp) {
+    set((state) => {
+      const histories = state.histories;
+      delete histories[timestamp.toString()];
+      return { histories };
+    });
   },
   reset() {
-    set({ histories: [] });
+    set({ histories: {} });
   },
 }));
