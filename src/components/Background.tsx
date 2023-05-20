@@ -1,13 +1,13 @@
 import { useCurrentHeight } from 'lib/hooks';
-import { useTargetStore, useHistoriesStore } from 'lib/stores';
+import { useGoalStore, useHistoriesStore } from 'lib/stores';
 import { cn } from 'lib/helpers';
 
 type BackgroundProps = React.ComponentPropsWithoutRef<'div'>;
 
 const Background = ({ className, children, ...props }: BackgroundProps) => {
   const height = useCurrentHeight();
-  const target = useTargetStore((state) => state.target);
-  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / target) * 100));
+  const goal = useGoalStore((state) => state.goal);
+  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
 
   return (
     <div

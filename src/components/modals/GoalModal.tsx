@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 
-import { useTargetStore } from 'lib/stores';
+import { useGoalStore } from 'lib/stores';
 import { useDebounce, useModal } from 'lib/hooks';
 import * as fonts from 'lib/fonts';
 import * as constants from 'data/constants';
 
-const TargetModal = () => {
-  const modal = useModal('target');
-  const { target, setTarget } = useTargetStore((state) => ({
-    target: state.target,
-    setTarget: state.setTarget,
+const GoalModal = () => {
+  const modal = useModal('goal');
+  const { goal, setGoal } = useGoalStore((state) => ({
+    goal: state.goal,
+    setGoal: state.setGoal,
   }));
 
   const [value, setValue] = useState<string>();
@@ -20,8 +20,8 @@ const TargetModal = () => {
     if (!debouncedValue) return;
     const v = parseInt(debouncedValue);
     if (isNaN(v)) return;
-    if (v === target) return;
-    setTarget(v);
+    if (v === goal) return;
+    setGoal(v);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
@@ -40,30 +40,30 @@ const TargetModal = () => {
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100"
               onClick={() => {
-                const v = parseInt(value || target.toString());
+                const v = parseInt(value || goal.toString());
                 if (isNaN(v) || v <= 0) return;
                 setValue((v - 100).toString());
               }}
-              data-testid="target-modal-decrease"
+              data-testid="goal-modal-decrease"
             >
               -
             </button>
             <input
               type="number"
-              value={value === undefined ? target : value}
+              value={value === undefined ? goal : value}
               onChange={(e) => setValue(e.target.value)}
               className="text-2xl font-extrabold text-neutral-700 flex-1 w-20 text-center outline-none"
               max={constants.MAX_VALUE}
-              data-testid="target-modal-input"
+              data-testid="goal-modal-input"
             />
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100"
               onClick={() => {
-                const v = parseInt(value || target.toString());
+                const v = parseInt(value || goal.toString());
                 if (isNaN(v) || v >= constants.MAX_VALUE) return;
                 setValue((v + 100).toString());
               }}
-              data-testid="target-modal-increase"
+              data-testid="goal-modal-increase"
             >
               +
             </button>
@@ -74,4 +74,4 @@ const TargetModal = () => {
   );
 };
 
-export default TargetModal;
+export default GoalModal;

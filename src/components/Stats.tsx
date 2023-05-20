@@ -1,4 +1,4 @@
-import { useTargetStore, useHistoriesStore } from 'lib/stores';
+import { useGoalStore, useHistoriesStore } from 'lib/stores';
 import { cn } from 'lib/helpers';
 
 type StatsProps = React.ComponentPropsWithoutRef<'div'> & {
@@ -6,11 +6,11 @@ type StatsProps = React.ComponentPropsWithoutRef<'div'> & {
 };
 
 const Stats = ({ className, isBackground, ...props }: StatsProps) => {
-  const target = useTargetStore((state) => state.target);
+  const goal = useGoalStore((state) => state.goal);
   const { value, percentage } = useHistoriesStore((state) => {
     const value = state.calcTotalValue();
 
-    return { value, percentage: Math.round((value / target) * 100) };
+    return { value, percentage: Math.round((value / goal) * 100) };
   });
 
   return (

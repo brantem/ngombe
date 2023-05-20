@@ -4,12 +4,12 @@ import dayjs from 'dayjs';
 import * as fonts from 'lib/fonts';
 import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
-import { useTargetStore, useHistoriesStore } from 'lib/stores';
+import { useGoalStore, useHistoriesStore } from 'lib/stores';
 
 const HistoriesModal = () => {
   const modal = useModal('histories');
   const drinkModal = useModal('drink');
-  const target = useTargetStore((state) => state.target);
+  const goal = useGoalStore((state) => state.goal);
   const { histories, remove, totalValue } = useHistoriesStore((state) => ({
     histories: state.histories,
     remove: state.remove,
@@ -17,7 +17,7 @@ const HistoriesModal = () => {
   }));
   const keys = Object.keys(histories);
 
-  const percentage = Math.round((totalValue / target) * 100);
+  const percentage = Math.round((totalValue / goal) * 100);
   const showWave = percentage > 5;
 
   return (
@@ -51,7 +51,7 @@ const HistoriesModal = () => {
             <div className="pt-4 text-center">
               <h1 className="text-2xl font-extrabold">{dayjs().format('D MMM YYYY')}</h1>
               <p className="text-neutral-400 mt-1">
-                {totalValue}/{target}ml &#183; {percentage}%
+                {totalValue}/{goal}ml &#183; {percentage}%
               </p>
             </div>
 
@@ -82,9 +82,7 @@ const HistoriesModal = () => {
                           data-testid="histories-modal-update-history"
                         >
                           <span className="font-bold text-cyan-500 text-lg">{histories[timestamp]}ml</span>{' '}
-                          <span className="text-neutral-300">
-                            +{Math.round((histories[timestamp] / target) * 100)}%
-                          </span>
+                          <span className="text-neutral-300">+{Math.round((histories[timestamp] / goal) * 100)}%</span>
                         </button>
                         <div className="space-x-3 flex items-center">
                           <span className="text-neutral-400">{dayjs(parseInt(timestamp)).format('H:mm')}</span>

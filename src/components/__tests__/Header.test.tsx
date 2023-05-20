@@ -21,13 +21,13 @@ describe('Header', () => {
     expect(show).toHaveBeenCalled();
   });
 
-  it('should open target modal', () => {
+  it('should open goal modal', () => {
     const { result } = renderHook(() => useModalStore());
     const show = vi.spyOn(result.current, 'show');
 
     render(<Header />);
     act(() => screen.getByText('2500ml').click());
-    // expect(show).toHaveBeenCalledWith('target'); // for some reason this is not working
+    // expect(show).toHaveBeenCalledWith('goal'); // for some reason this is not working
     expect(show).toHaveBeenCalled();
   });
 });

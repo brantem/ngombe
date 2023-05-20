@@ -1,6 +1,6 @@
 import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
-import { useTargetStore } from 'lib/stores';
+import { useGoalStore } from 'lib/stores';
 
 type HistoriesButtonProps = {
   isBackground?: boolean;
@@ -24,13 +24,13 @@ const HistoriesButton = ({ isBackground }: HistoriesButtonProps) => {
   );
 };
 
-type TargetButtonProps = {
+type GoalButtonProps = {
   isBackground?: boolean;
 };
 
-const TargetButton = ({ isBackground }: TargetButtonProps) => {
-  const modal = useModal('target');
-  const target = useTargetStore((state) => state.target);
+const GoalButton = ({ isBackground }: GoalButtonProps) => {
+  const modal = useModal('goal');
+  const goal = useGoalStore((state) => state.goal);
 
   return (
     <button
@@ -40,7 +40,7 @@ const TargetButton = ({ isBackground }: TargetButtonProps) => {
       )}
       onClick={modal.onOpen}
     >
-      {target}ml
+      {goal}ml
     </button>
   );
 };
@@ -55,7 +55,7 @@ const Header = ({ isBackground }: HeaderProps) => {
       <div className="max-w-lg w-full mx-auto flex justify-between font-bold">
         <HistoriesButton isBackground={isBackground} />
 
-        <TargetButton isBackground={isBackground} />
+        <GoalButton isBackground={isBackground} />
       </div>
     </header>
   );
