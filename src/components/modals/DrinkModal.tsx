@@ -28,10 +28,24 @@ const DrinkModal = () => {
       },
     };
   });
-  const { register, handleSubmit, reset } = useForm<Values>({ values: { value, time: dayjs().format('HH:mm') } });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Values>({ values: { value, time: dayjs().format('HH:mm') } });
+
+  const hideTime = modal.data?.hideTime;
 
   return (
-    <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[110] flex items-end">
+    <Dialog
+      open={modal.isOpen}
+      onClose={() => {
+        modal.onClose();
+        reset();
+      }}
+      className="fixed inset-0 z-[110] flex items-end"
+    >
       <div className="fixed inset-0 bg-black/5" aria-hidden="true" />
 
       <Dialog.Panel className={`h-full w-full flex items-center justify-center px-4 sm:px-0 ${fonts.nunito.className}`}>
@@ -44,9 +58,8 @@ const DrinkModal = () => {
             }
             onSubmit(date.getTime().toString(), data.value);
             modal.onClose();
-            reset();
           })}
-          className="relative bg-white shadow-sm rounded-xl border border-neutral-100 w-full max-w-sm p-4 space-y-4"
+          className="relative bg-white shadow-sm rounded-xl border border-neutral-100 p-4 space-y-4"
         >
           <div className={cn('grid gap-x-4 items-center', modal.data?.hideTime ? 'grid-cols-1' : 'grid-cols-2')}>
             <label className="flex flex-col">
@@ -54,17 +67,31 @@ const DrinkModal = () => {
               <input
                 {...register('value', { required: true, max: constants.MAX_VALUE, valueAsNumber: true })}
                 type="number"
-                className="text-2xl font-extrabold text-neutral-700 outline-none border rounded-xl h-12 px-3"
+                className={cn(
+                  'text-2xl font-extrabold text-neutral-700 outline-none rounded-xl h-12 px-3 border-2 border-neutral-200',
+                  !hideTime ? 'w-36' : 'w-[304px] text-center',
+                  errors.value && 'border-red-500',
+                )}
                 data-testid="drink-modal-value"
               />
             </label>
-            {!modal.data?.hideTime && (
+            {!hideTime && (
               <label className="flex flex-col">
                 <span className="mb-1 text-neutral-500">Time</span>
                 <input
-                  {...register('time')}
+                  {...register('time', {
+                    validate: (v) => {
+                      const [hour, minute] = v.split(':');
+                      const date = new Date();
+                      date.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
+                      return date.getTime() <= Date.now();
+                    },
+                  })}
                   type="time"
-                  className="text-2xl font-extrabold text-neutral-700 outline-none border rounded-xl h-12 px-3"
+                  className={cn(
+                    'text-2xl font-extrabold text-neutral-700 outline-none rounded-xl h-12 px-3 border-2 border-neutral-200 w-36',
+                    errors.time && 'border-red-500',
+                  )}
                   data-testid="drink-modal-time"
                 />
               </label>
