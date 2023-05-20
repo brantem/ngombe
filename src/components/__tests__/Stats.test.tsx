@@ -3,12 +3,23 @@ import '@testing-library/jest-dom';
 
 import Stats from 'components/Stats';
 
-import { useHistoriesStore } from 'lib/stores';
+import { goalStore, useHistoriesStore } from 'lib/stores';
 
-test('Stats', () => {
-  const { result } = renderHook(() => useHistoriesStore());
-  act(() => result.current.drink(Date.now().toString(), 100));
+describe('Stats', () => {
+  it('should not show NaN when not ready', () => {
+    render(<Stats />);
+    expect(screen.getByTestId('stats-value').textContent).toEqual('0ml');
+    expect(screen.getByTestId('stats-percentage').textContent).toEqual('0% of your goal');
+  });
 
-  const { container } = render(<Stats />);
-  expect(container).toMatchSnapshot();
+  it('should show correct stats', () => {
+    act(() => goalStore.setState({ goal: 2500, isReady: true }));
+    const histories = renderHook(() => useHistoriesStore());
+
+    const { container } = render(<Stats />);
+    act(() => histories.result.current.drink(Date.now().toString(), 100));
+    expect(screen.getByTestId('stats-value').textContent).toEqual('100ml');
+    expect(screen.getByTestId('stats-percentage').textContent).toEqual('4% of your goal');
+    expect(container).toMatchSnapshot();
+  });
 });

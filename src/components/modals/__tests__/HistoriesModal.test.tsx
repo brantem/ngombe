@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import HistoriesModal from 'components/modals/HistoriesModal';
 
-import { useModalStore, useHistoriesStore } from 'lib/stores';
+import { goalStore, useModalStore, useHistoriesStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -23,6 +23,8 @@ describe('HistoriesModal', () => {
 
     vi.useFakeTimers();
     vi.setSystemTime(new Date('1 January 2023'));
+
+    act(() => goalStore.setState({ goal: 2500, isReady: true }));
   });
 
   beforeEach(() => {

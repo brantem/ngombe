@@ -3,9 +3,13 @@ import '@testing-library/jest-dom';
 
 import Header from 'components/Header';
 
-import { useModalStore } from 'lib/stores';
+import { goalStore, useModalStore } from 'lib/stores';
 
 describe('Header', () => {
+  beforeAll(() => {
+    act(() => goalStore.setState({ goal: 2500, isReady: true }));
+  });
+
   it('should match snapshot', () => {
     const { container } = render(<Header />);
     expect(container).toMatchSnapshot();

@@ -1,18 +1,20 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Stats 1`] = `
+exports[`Stats > should show correct stats 1`] = `
 <div>
   <div
     class="text-center flex flex-col justify-center items-center"
   >
     <h1
       class="tabular-nums text-7xl font-extrabold text-cyan-600"
+      data-testid="stats-value"
     >
       100
       ml
     </h1>
     <p
       class="tabular-nums text-2xl text-cyan-500"
+      data-testid="stats-percentage"
     >
       4
       % of your goal

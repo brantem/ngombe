@@ -14,10 +14,9 @@ exports[`Header > should match snapshot 1`] = `
         Histories
       </button>
       <button
-        class="h-9 px-3 rounded-full border-2 outline-none shadow-sm border-cyan-500 text-cyan-500"
+        class="h-9 px-3 rounded-full border-2 outline-none shadow-sm min-w-[88px] border-cyan-500 text-cyan-500"
       >
-        2500
-        ml
+        2500ml
       </button>
     </div>
   </header>

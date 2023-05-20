@@ -15,7 +15,7 @@ const GoalModal = () => {
 
   const [value, setValue] = useState<string>();
 
-  const debouncedValue = useDebounce(value, 500);
+  const debouncedValue = useDebounce(value, 250);
   useEffect(() => {
     if (!debouncedValue) return;
     const v = parseInt(debouncedValue);

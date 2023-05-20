@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import GoalModal from 'components/modals/GoalModal';
 
-import { useModalStore } from 'lib/stores';
+import { goalStore, useModalStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -20,6 +20,8 @@ describe('GoalModal', () => {
       unobserve() {}
       disconnect() {}
     };
+
+    act(() => goalStore.setState({ goal: 2500, isReady: true }));
   });
 
   beforeAll(() => {

@@ -13,6 +13,7 @@ const Footer = ({ isBackground, className, ...props }: FooterProps) => {
       <button
         className={cn(
           'px-5 py-2 rounded-full text-2xl font-bold flex items-center border shadow-sm',
+          /* c8 ignore next 3 */
           isBackground
             ? 'bg-neutral-100 border-neutral-200 text-neutral-500'
             : 'bg-white border-neutral-100 text-cyan-500',

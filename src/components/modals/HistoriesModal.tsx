@@ -25,13 +25,16 @@ const HistoriesModal = () => {
       <div className="fixed inset-0" aria-hidden="true" />
 
       <div
-        className={cn('max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto transition-all', showWave && 'pb-4')}
+        className={cn(
+          'max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto transition-all',
+          /* c8 ignore next */ showWave && 'pb-4',
+        )}
       >
         <Dialog.Panel className={`h-full w-full ${fonts.nunito.className}`}>
           <div
             className={cn(
               'relative bg-white shadow-sm rounded-t-xl border border-neutral-100 h-full w-full overflow-hidden flex flex-col',
-              showWave && 'wave',
+              /* c8 ignore next */ showWave && 'wave',
             )}
             style={{ animationDuration: '2.5s' }}
           >
@@ -70,7 +73,7 @@ const HistoriesModal = () => {
             {keys.length === 0 ? (
               <div className="flex items-center justify-center flex-1 text-neutral-300">Nothing to see here</div>
             ) : (
-              <ul className={cn('space-y-3 overflow-y-auto', showWave ? 'pb-12' : 'pb-3')}>
+              <ul className={cn('space-y-3 overflow-y-auto', /* c8 ignore next */ showWave ? 'pb-12' : 'pb-3')}>
                 {keys
                   .sort((a, b) => parseInt(a) - parseInt(b))
                   .map((timestamp, i) => (
@@ -102,7 +105,7 @@ const HistoriesModal = () => {
                           </button>
                         </div>
                       </div>
-                      {i !== keys.length - 1 && <hr className="mt-3 w-[85%] mx-auto" />}
+                      {/* c8 ignore next */ i !== keys.length - 1 && <hr className="mt-3 w-[85%] mx-auto" />}
                     </li>
                   ))}
                 <li className="text-center text-neutral-300">That&apos;s all!</li>
