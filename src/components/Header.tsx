@@ -12,8 +12,10 @@ const HistoriesButton = ({ isBackground }: HistoriesButtonProps) => {
   return (
     <button
       className={cn(
-        'px-3 py-1 rounded-full',
-        isBackground ? 'bg-neutral-100 text-neutral-500' : 'bg-white text-teal-500'
+        'h-9 px-3 rounded-full border shadow-sm',
+        isBackground
+          ? 'bg-neutral-100 border-neutral-200 text-neutral-500'
+          : 'bg-white border-neutral-100 text-teal-500'
       )}
       onClick={modal.onOpen}
     >
@@ -30,10 +32,12 @@ const TargetButton = ({ isBackground }: TargetButtonProps) => {
   const modal = useModal('target');
   const target = useTargetStore((state) => state.target);
 
+  if (modal.isOpen) return null;
+
   return (
     <button
       className={cn(
-        'px-3 py-1 rounded-full border-2 outline-none',
+        'h-9 px-3 rounded-full border-2 outline-none shadow-sm',
         isBackground ? 'border-neutral-500 text-neutral-500' : 'border-teal-500 text-teal-500'
       )}
       onClick={modal.onOpen}
