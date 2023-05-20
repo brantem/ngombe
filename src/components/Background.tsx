@@ -23,7 +23,7 @@ const Background = ({ className, children, ...props }: BackgroundProps) => {
     >
       <div
         className="fixed inset-0 grid grid-rows-3 h-screen w-screen"
-        style={{ height: `calc(${height * 0.01 + 'px'} * 100)` } /* safari moment */}
+        style={{ height: height > 0 ? `calc(${height * 0.01 + 'px'} * 100)` : '100vh' } /* safari moment */}
       >
         {children}
       </div>
