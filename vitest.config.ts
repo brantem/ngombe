@@ -12,6 +12,7 @@ export default defineConfig({
     outputFile: {
       html: './.vitest/html/index.html',
     },
+    setupFiles: './src/__tests__/setup.ts',
     coverage: {
       provider: 'c8',
       cleanOnRerun: true,
