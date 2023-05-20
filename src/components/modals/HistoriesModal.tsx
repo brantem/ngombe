@@ -22,9 +22,11 @@ const HistoriesModal = () => {
 
   return (
     <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[100] flex items-end">
-      <div className="fixed inset-0 bg-black/5" aria-hidden="true" />
+      <div className="fixed inset-0" aria-hidden="true" />
 
-      <div className={cn('max-h-[calc(100%-68px)] h-full w-full max-w-lg mx-auto transition-all', showWave && 'pb-4')}>
+      <div
+        className={cn('max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto transition-all', showWave && 'pb-4')}
+      >
         <Dialog.Panel className={`h-full w-full ${fonts.nunito.className}`}>
           <div
             className={cn(
@@ -55,7 +57,7 @@ const HistoriesModal = () => {
 
             <div className="flex justify-center mx-auto mt-4 mb-6">
               <button
-                className="flex items-center rounded-full bg-teal-100 text-teal-500 pl-2 pr-3 py-1 text-sm"
+                className="flex items-center rounded-full bg-cyan-100 text-cyan-500 pl-2 pr-3 py-1 text-sm"
                 onClick={drinkModal.onOpen}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -75,7 +77,7 @@ const HistoriesModal = () => {
                     <li key={key} data-testid="histories-modal-item">
                       <div className="px-4 flex justify-between items-center">
                         <span>
-                          <span className="font-bold text-teal-500 text-lg">{histories[key]}ml</span>{' '}
+                          <span className="font-bold text-cyan-500 text-lg">{histories[key]}ml</span>{' '}
                           <span className="text-neutral-300">+{Math.round((histories[key] / target) * 100)}%</span>
                         </span>
                         <div className="space-x-3 flex items-center">

@@ -6,13 +6,13 @@ exports[`Stats 1`] = `
     class="text-center flex flex-col justify-center items-center"
   >
     <h1
-      class="tabular-nums text-7xl font-extrabold text-teal-600"
+      class="tabular-nums text-7xl font-extrabold text-cyan-600"
     >
       100
       ml
     </h1>
     <p
-      class="tabular-nums text-2xl text-teal-500"
+      class="tabular-nums text-2xl text-cyan-500"
     >
       4
       % of your goal

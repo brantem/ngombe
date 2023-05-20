@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <meta name="theme-color" content={hasReachedTarget ? '#ccfbf1' : '#ffffff'} />
+        <meta name="theme-color" content={hasReachedTarget ? '#cffafe' : '#ffffff'} />
       </Head>
       <Component {...pageProps} />
     </>

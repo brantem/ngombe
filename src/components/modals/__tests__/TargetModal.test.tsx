@@ -44,7 +44,7 @@ describe('TargetModal', () => {
     render(<TargetModal />);
     expect(screen.getByTestId('target-modal-input')).toHaveValue(2500);
     act(() => screen.getByTestId('target-modal-increase').click());
-    expect(screen.getByTestId('target-modal-input')).toHaveValue(2510);
+    expect(screen.getByTestId('target-modal-input')).toHaveValue(2600);
     act(() => screen.getByTestId('target-modal-decrease').click());
     expect(screen.getByTestId('target-modal-input')).toHaveValue(2500);
     // TODO: setTarget

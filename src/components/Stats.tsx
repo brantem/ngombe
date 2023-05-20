@@ -15,10 +15,10 @@ const Stats = ({ className, isBackground, ...props }: StatsProps) => {
 
   return (
     <div className={cn('text-center flex flex-col justify-center items-center', className)} {...props}>
-      <h1 className={cn('tabular-nums text-7xl font-extrabold', isBackground ? 'text-neutral-200' : 'text-teal-600')}>
+      <h1 className={cn('tabular-nums text-7xl font-extrabold', isBackground ? 'text-neutral-200' : 'text-cyan-600')}>
         {value}ml
       </h1>
-      <p className={cn('tabular-nums text-2xl', isBackground ? 'text-neutral-300' : 'text-teal-500')}>
+      <p className={cn('tabular-nums text-2xl', isBackground ? 'text-neutral-300' : 'text-cyan-500')}>
         {percentage}% of your goal
       </p>
     </div>

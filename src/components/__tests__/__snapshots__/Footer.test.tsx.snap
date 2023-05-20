@@ -6,7 +6,7 @@ exports[`Footer > should match snapshot 1`] = `
     class="flex items-end justify-center pb-12"
   >
     <button
-      class="px-5 py-2 rounded-full text-2xl font-bold flex items-center border shadow-sm bg-white border-neutral-100 text-teal-500"
+      class="px-5 py-2 rounded-full text-2xl font-bold flex items-center border shadow-sm bg-white border-neutral-100 text-cyan-500"
     >
       <svg
         fill="currentColor"

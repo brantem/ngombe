@@ -20,7 +20,7 @@ const DrinkModal = () => {
 
   return (
     <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[110] flex items-end">
-      <div className="fixed inset-0 bg-black/5" aria-hidden="true" />
+      <div className="fixed inset-0" aria-hidden="true" />
 
       <Dialog.Panel className={`h-full w-full flex items-center justify-center px-4 sm:px-0 ${fonts.nunito.className}`}>
         <form
@@ -59,7 +59,7 @@ const DrinkModal = () => {
             )}
           </div>
 
-          <button type="submit" className="bg-teal-100 text-teal-500 h-12 px-5 rounded-xl text-lg w-full font-bold">
+          <button type="submit" className="bg-cyan-100 text-cyan-500 h-12 px-5 rounded-xl text-lg w-full font-bold">
             Drink
           </button>
         </form>
