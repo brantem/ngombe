@@ -32,8 +32,6 @@ const TargetButton = ({ isBackground }: TargetButtonProps) => {
   const modal = useModal('target');
   const target = useTargetStore((state) => state.target);
 
-  if (modal.isOpen) return null;
-
   return (
     <button
       className={cn(
