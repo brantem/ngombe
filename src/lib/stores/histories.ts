@@ -18,7 +18,12 @@ export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
     set((state) => {
       const histories = state.histories;
       const key = timestamp.toString();
-      histories[key] = (histories[key] || 0) + value;
+      const v = (histories[key] || 0) + value;
+      if (v > 0) {
+        histories[key] = v;
+      } else if (key in histories) {
+        delete histories[key];
+      }
       return { histories };
     });
   },

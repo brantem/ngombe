@@ -58,5 +58,5 @@ describe('TargetModal', () => {
     // TODO: setTarget
   });
 
-  // TODO: 0 > value < constants.MAX_VALUE
+  // TODO: value <= constants.MAX_VALUE
 });
