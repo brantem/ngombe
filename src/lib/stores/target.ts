@@ -6,7 +6,7 @@ interface TargetState {
 }
 
 export const useTargetStore = create<TargetState>()((set, get) => ({
-  target: 2612,
+  target: 2500,
   setTarget(target) {
     set({ target });
   },

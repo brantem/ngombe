@@ -1,6 +1,6 @@
-import { useModalStore, ModalId } from 'lib/stores';
+import { useModalStore } from 'lib/stores';
 
-export const useModal = <T extends Record<string, any>>(id: ModalId) => {
+export const useModal = <T extends Record<string, any>>(id: string) => {
   return useModalStore((state) => {
     const item = state.items.get(id);
     return {

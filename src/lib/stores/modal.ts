@@ -1,11 +1,9 @@
 import { create } from 'zustand';
 
-export type ModalId = 'drink' | 'histories' | 'target';
-
 type ModalState = {
-  items: Map<ModalId, boolean | Record<string, any>>;
-  show: (id: ModalId, data?: boolean | Record<string, any>) => void;
-  hide: (id: ModalId) => void;
+  items: Map<string, boolean | Record<string, any>>;
+  show: (id: string, data?: boolean | Record<string, any>) => void;
+  hide: (id: string) => void;
 };
 
 export const useModalStore = create<ModalState>()((set) => ({
