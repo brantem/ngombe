@@ -7,7 +7,6 @@ export const useCurrentHeight = () => {
 
   useIsomorphicLayoutEffect(() => {
     const handleResize = () => {
-      console.log(window.innerHeight);
       if (typeof window === 'undefined') return;
       setHeight(window.innerHeight);
     };
