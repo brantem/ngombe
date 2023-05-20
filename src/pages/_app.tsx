@@ -1,6 +1,7 @@
-import { useTargetStore, useHistoriesStore } from 'lib/stores';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+
+import { useTargetStore, useHistoriesStore } from 'lib/stores';
 
 import 'styles/globals.css';
 

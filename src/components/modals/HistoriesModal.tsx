@@ -29,7 +29,7 @@ const HistoriesModal = () => {
           <div
             className={cn(
               'relative bg-white shadow-sm rounded-t-xl border border-neutral-100 h-full w-full overflow-hidden flex flex-col',
-              showWave && 'wave'
+              showWave && 'wave',
             )}
             style={{ animationDuration: '2.5s' }}
           >
