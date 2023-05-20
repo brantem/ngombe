@@ -24,7 +24,7 @@ const HistoriesModal = () => {
     <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[100] flex items-end">
       <div className="fixed inset-0 bg-black/5" aria-hidden="true" />
 
-      <div className={cn('max-h-[90%] h-[40rem] w-full max-w-lg mx-auto transition-all', showWave && 'pb-4')}>
+      <div className={cn('max-h-[calc(100%-68px)] h-full w-full max-w-lg mx-auto transition-all', showWave && 'pb-4')}>
         <Dialog.Panel className={`h-full w-full ${fonts.nunito.className}`}>
           <div
             className={cn(
