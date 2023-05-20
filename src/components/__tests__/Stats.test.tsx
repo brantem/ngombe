@@ -7,7 +7,7 @@ import { useHistoriesStore } from 'lib/stores';
 
 test('Stats', () => {
   const { result } = renderHook(() => useHistoriesStore());
-  act(() => result.current.drink(Date.now(), 100));
+  act(() => result.current.drink(Date.now().toString(), 100));
 
   const { container } = render(<Stats />);
   expect(container).toMatchSnapshot();

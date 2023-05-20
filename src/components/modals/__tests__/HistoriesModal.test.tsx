@@ -33,6 +33,9 @@ describe('HistoriesModal', () => {
   afterEach(() => {
     const modal = renderHook(() => useModalStore());
     act(() => modal.result.current.hide('histories'));
+
+    const histories = renderHook(() => useHistoriesStore());
+    act(() => histories.result.current.reset());
   });
 
   afterAll(() => {
@@ -44,7 +47,7 @@ describe('HistoriesModal', () => {
     expect(screen.getByText('Nothing to see here')).toBeInTheDocument();
   });
 
-  it('should open drink modal', () => {
+  it('should open drink modal to add missed drink', () => {
     const modal = renderHook(() => useModalStore());
     const show = vi.spyOn(modal.result.current, 'show');
 
@@ -53,11 +56,23 @@ describe('HistoriesModal', () => {
     expect(show).toHaveBeenCalled();
   });
 
+  it('should open drink modal to update history', () => {
+    const modal = renderHook(() => useModalStore());
+    const show = vi.spyOn(modal.result.current, 'show');
+
+    const histories = renderHook(() => useHistoriesStore());
+
+    render(<HistoriesModal />);
+    act(() => histories.result.current.drink(Date.now().toString(), 100));
+    act(() => screen.getByTestId('histories-modal-update-history').click());
+    expect(show).toHaveBeenCalledWith('drink', { timestamp: Date.now().toString(), hideTime: true });
+  });
+
   it('should show correct stats', () => {
     const histories = renderHook(() => useHistoriesStore());
 
     render(<HistoriesModal />);
-    act(() => histories.result.current.drink(Date.now(), 100));
+    act(() => histories.result.current.drink(Date.now().toString(), 100));
     expect(screen.getByText('1 Jan 2023')).toBeInTheDocument();
     expect(screen.getByText('100/2500ml · 4%')).toBeInTheDocument();
     act(() => histories.result.current.reset());
@@ -68,7 +83,7 @@ describe('HistoriesModal', () => {
     const remove = vi.spyOn(histories.result.current, 'remove');
 
     render(<HistoriesModal />);
-    act(() => histories.result.current.drink(Date.now(), 100));
+    act(() => histories.result.current.drink(Date.now().toString(), 100));
     expect(screen.getAllByTestId('histories-modal-item')).toHaveLength(1);
     act(() => screen.getByTestId('histories-modal-remove-history').click());
     expect(remove).toHaveBeenCalledWith(Date.now().toString());

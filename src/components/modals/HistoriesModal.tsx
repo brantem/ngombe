@@ -73,18 +73,24 @@ const HistoriesModal = () => {
               <ul className={cn('space-y-3 overflow-y-auto', showWave ? 'pb-12' : 'pb-3')}>
                 {keys
                   .sort((a, b) => parseInt(a) - parseInt(b))
-                  .map((key, i) => (
-                    <li key={key} data-testid="histories-modal-item">
+                  .map((timestamp, i) => (
+                    <li key={timestamp} data-testid="histories-modal-item">
                       <div className="px-4 flex justify-between items-center">
-                        <span>
-                          <span className="font-bold text-cyan-500 text-lg">{histories[key]}ml</span>{' '}
-                          <span className="text-neutral-300">+{Math.round((histories[key] / target) * 100)}%</span>
-                        </span>
+                        <button
+                          onClick={() => drinkModal.onOpen({ timestamp, hideTime: true })}
+                          className="cursor-pointer"
+                          data-testid="histories-modal-update-history"
+                        >
+                          <span className="font-bold text-cyan-500 text-lg">{histories[timestamp]}ml</span>{' '}
+                          <span className="text-neutral-300">
+                            +{Math.round((histories[timestamp] / target) * 100)}%
+                          </span>
+                        </button>
                         <div className="space-x-3 flex items-center">
-                          <span className="text-neutral-400">{dayjs(parseInt(key)).format('H:mm')}</span>
+                          <span className="text-neutral-400">{dayjs(parseInt(timestamp)).format('H:mm')}</span>
                           <button
                             className="rounded-full h-6 w-6 bg-rose-100 text-rose-500 flex items-center justify-center"
-                            onClick={() => remove(key)}
+                            onClick={() => remove(timestamp)}
                             data-testid="histories-modal-remove-history"
                           >
                             <svg

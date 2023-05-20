@@ -3,7 +3,8 @@ import { create } from 'zustand';
 interface HistoriesState {
   histories: Record<string, number>;
   calcTotalValue(): number;
-  drink(timestamp: number, value: number): void;
+  drink(timestamp: string, value: number): void;
+  update(timestamp: string, value: number): void;
   remove(timestamp: string): void;
   reset(): void;
 }
@@ -15,24 +16,39 @@ export const useHistoriesStore = create<HistoriesState>()((set, get) => ({
     return Object.keys(histories).reduce((value, key) => value + histories[key], 0);
   },
   drink(timestamp, value) {
-    set((state) => {
-      const histories = state.histories;
-      const key = timestamp.toString();
-      const v = (histories[key] || 0) + value;
-      if (v > 0) {
-        histories[key] = v;
-      } else if (key in histories) {
-        delete histories[key];
-      }
-      return { histories };
-    });
+    if (value === 0) return;
+
+    const histories = get().histories;
+
+    const v = (histories[timestamp] || 0) + value;
+    if (v > 0) {
+      histories[timestamp] = v;
+    } else {
+      if (!(timestamp in histories)) return;
+      delete histories[timestamp];
+    }
+
+    set({ histories });
+  },
+  update(timestamp, value) {
+    if (value === 0) return;
+
+    const histories = get().histories;
+    if (!(timestamp in histories)) return;
+
+    if (value > 0) {
+      histories[timestamp] = value;
+    } else {
+      histories[timestamp] += value;
+    }
+
+    set({ histories });
   },
   remove(timestamp) {
-    set((state) => {
-      const histories = state.histories;
-      delete histories[timestamp.toString()];
-      return { histories };
-    });
+    const histories = get().histories;
+    if (!(timestamp in histories)) return;
+    delete histories[timestamp];
+    set({ histories });
   },
   reset() {
     set({ histories: {} });

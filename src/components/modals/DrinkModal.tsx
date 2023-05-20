@@ -14,9 +14,21 @@ type Values = {
 };
 
 const DrinkModal = () => {
-  const modal = useModal<{ hideTime: boolean }>('drink');
-  const drink = useHistoriesStore((state) => state.drink);
-  const { register, handleSubmit, reset } = useForm<Values>({ values: { value: 100, time: dayjs().format('HH:mm') } });
+  const modal = useModal<{ timestamp?: string; hideTime: boolean }>('drink');
+  const { value, onSubmit } = useHistoriesStore((state) => {
+    const _timestamp = modal.data?.timestamp;
+    return {
+      value: _timestamp ? state.histories[_timestamp] : 100,
+      onSubmit: (timestamp: string, value: number) => {
+        if (_timestamp) {
+          state.update(_timestamp, value);
+        } else {
+          state.drink(timestamp, value);
+        }
+      },
+    };
+  });
+  const { register, handleSubmit, reset } = useForm<Values>({ values: { value, time: dayjs().format('HH:mm') } });
 
   return (
     <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[110] flex items-end">
@@ -30,7 +42,7 @@ const DrinkModal = () => {
               const [hour, minute] = data.time.split(':');
               date.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
             }
-            drink(date.getTime(), data.value);
+            onSubmit(date.getTime().toString(), data.value);
             modal.onClose();
             reset();
           })}
