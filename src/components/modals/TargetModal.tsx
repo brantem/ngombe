@@ -4,8 +4,7 @@ import { Dialog } from '@headlessui/react';
 import { useTargetStore } from 'lib/stores';
 import { useDebounce, useModal } from 'lib/hooks';
 import * as fonts from 'lib/fonts';
-
-const MAX = 99999;
+import * as constants from 'data/constants';
 
 const TargetModal = () => {
   const modal = useModal('target');
@@ -23,6 +22,7 @@ const TargetModal = () => {
     if (isNaN(v)) return;
     if (v === target) return;
     setTarget(v);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   return (
@@ -41,9 +41,10 @@ const TargetModal = () => {
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-teal-500 h-9 w-9 pb-[2px] bg-teal-100"
               onClick={() => {
                 const v = parseInt(value || target.toString());
-                if (isNaN(v) || v === 0) return;
+                if (isNaN(v) || v <= 0) return;
                 setValue((v - 10).toString());
               }}
+              data-testid="target-modal-decrease"
             >
               -
             </button>
@@ -52,15 +53,17 @@ const TargetModal = () => {
               value={value === undefined ? target : value}
               onChange={(e) => setValue(e.target.value)}
               className="text-2xl font-extrabold text-neutral-700 flex-1 w-20 text-center outline-none"
-              max={MAX}
+              max={constants.MAX_VALUE}
+              data-testid="target-modal-input"
             />
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-teal-500 h-9 w-9 pb-[2px] bg-teal-100"
               onClick={() => {
                 const v = parseInt(value || target.toString());
-                if (isNaN(v) || v >= MAX) return;
+                if (isNaN(v) || v >= constants.MAX_VALUE) return;
                 setValue((v + 10).toString());
               }}
+              data-testid="target-modal-increase"
             >
               +
             </button>

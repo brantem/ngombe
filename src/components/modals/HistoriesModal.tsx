@@ -47,7 +47,7 @@ const HistoriesModal = () => {
             </button>
 
             <div className="pt-4 text-center">
-              <h1 className="text-2xl font-extrabold">{dayjs().format('DD MMM YYYY')}</h1>
+              <h1 className="text-2xl font-extrabold">{dayjs().format('D MMM YYYY')}</h1>
               <p className="text-neutral-400 mt-1">
                 {totalValue}/{target}ml &#183; {percentage}%
               </p>
@@ -72,7 +72,7 @@ const HistoriesModal = () => {
                 {keys
                   .sort((a, b) => parseInt(a) - parseInt(b))
                   .map((key, i) => (
-                    <li key={key}>
+                    <li key={key} data-testid="histories-modal-item">
                       <div className="px-4 flex justify-between items-center">
                         <span>
                           <span className="font-bold text-teal-500 text-lg">{histories[key]}ml</span>{' '}
@@ -83,6 +83,7 @@ const HistoriesModal = () => {
                           <button
                             className="rounded-full h-6 w-6 bg-rose-100 text-rose-500 flex items-center justify-center"
                             onClick={() => remove(key)}
+                            data-testid="histories-modal-remove-history"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
