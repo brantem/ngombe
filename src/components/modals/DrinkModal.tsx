@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 import * as fonts from 'lib/fonts';
 import { useModal } from 'lib/hooks';
-import { useHistoriesStore } from 'lib/stores';
+import { useRecordsStore } from 'lib/stores';
 import { cn } from 'lib/helpers';
 import * as constants from 'data/constants';
 
@@ -15,10 +15,10 @@ type Values = {
 
 const DrinkModal = () => {
   const modal = useModal<{ timestamp?: string; hideTime: boolean }>('drink');
-  const { value, onSubmit } = useHistoriesStore((state) => {
+  const { value, onSubmit } = useRecordsStore((state) => {
     const _timestamp = modal.data?.timestamp;
     return {
-      value: _timestamp ? state.histories[_timestamp] : 100,
+      value: _timestamp ? state.records[_timestamp] : 100,
       onSubmit: (timestamp: string, value: number) => {
         if (_timestamp) {
           state.update(_timestamp, value);

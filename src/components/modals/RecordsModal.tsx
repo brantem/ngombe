@@ -4,18 +4,18 @@ import dayjs from 'dayjs';
 import * as fonts from 'lib/fonts';
 import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
-import { useGoalStore, useHistoriesStore } from 'lib/stores';
+import { useGoalStore, useRecordsStore } from 'lib/stores';
 
-const HistoriesModal = () => {
-  const modal = useModal('histories');
+const RecordsModal = () => {
+  const modal = useModal('records');
   const drinkModal = useModal('drink');
   const goal = useGoalStore((state) => state.goal);
-  const { histories, remove, totalValue } = useHistoriesStore((state) => ({
-    histories: state.histories,
+  const { records, remove, totalValue } = useRecordsStore((state) => ({
+    records: state.records,
     remove: state.remove,
     totalValue: state.calcTotalValue(),
   }));
-  const keys = Object.keys(histories);
+  const keys = Object.keys(records);
 
   const percentage = Math.round((totalValue / goal) * 100);
   const showWave = percentage > 5;
@@ -77,22 +77,22 @@ const HistoriesModal = () => {
                 {keys
                   .sort((a, b) => parseInt(a) - parseInt(b))
                   .map((timestamp, i) => (
-                    <li key={timestamp} data-testid="histories-modal-item">
+                    <li key={timestamp} data-testid="records-modal-item">
                       <div className="px-4 flex justify-between items-center">
                         <button
                           onClick={() => drinkModal.onOpen({ timestamp, hideTime: true })}
                           className="cursor-pointer"
-                          data-testid="histories-modal-update-history"
+                          data-testid="records-modal-update"
                         >
-                          <span className="font-bold text-cyan-500 text-lg">{histories[timestamp]}ml</span>{' '}
-                          <span className="text-neutral-300">+{Math.round((histories[timestamp] / goal) * 100)}%</span>
+                          <span className="font-bold text-cyan-500 text-lg">{records[timestamp]}ml</span>{' '}
+                          <span className="text-neutral-300">+{Math.round((records[timestamp] / goal) * 100)}%</span>
                         </button>
                         <div className="space-x-3 flex items-center">
                           <span className="text-neutral-400">{dayjs(parseInt(timestamp)).format('H:mm')}</span>
                           <button
                             className="rounded-full h-6 w-6 bg-rose-100 text-rose-500 flex items-center justify-center"
                             onClick={() => remove(timestamp)}
-                            data-testid="histories-modal-remove-history"
+                            data-testid="records-modal-remove"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -118,4 +118,4 @@ const HistoriesModal = () => {
   );
 };
 
-export default HistoriesModal;
+export default RecordsModal;

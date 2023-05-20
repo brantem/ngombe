@@ -1,9 +1,9 @@
 import { renderHook, act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import HistoriesModal from 'components/modals/HistoriesModal';
+import RecordsModal from 'components/modals/RecordsModal';
 
-import { goalStore, useModalStore, useHistoriesStore } from 'lib/stores';
+import { goalStore, useModalStore, useRecordsStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -13,7 +13,7 @@ vi.mock('next/font/google', () => ({
   },
 }));
 
-describe('HistoriesModal', () => {
+describe('RecordsModal', () => {
   beforeAll(() => {
     global.ResizeObserver = class ResizeObserver {
       observe() {}
@@ -29,15 +29,15 @@ describe('HistoriesModal', () => {
 
   beforeEach(() => {
     const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('histories'));
+    act(() => modal.result.current.show('records'));
   });
 
   afterEach(() => {
     const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.hide('histories'));
+    act(() => modal.result.current.hide('records'));
 
-    const histories = renderHook(() => useHistoriesStore());
-    act(() => histories.result.current.reset());
+    const records = renderHook(() => useRecordsStore());
+    act(() => records.result.current.reset());
   });
 
   afterAll(() => {
@@ -45,7 +45,7 @@ describe('HistoriesModal', () => {
   });
 
   it('should show empty list', () => {
-    render(<HistoriesModal />);
+    render(<RecordsModal />);
     expect(screen.getByText('Nothing to see here')).toBeInTheDocument();
   });
 
@@ -53,42 +53,42 @@ describe('HistoriesModal', () => {
     const modal = renderHook(() => useModalStore());
     const show = vi.spyOn(modal.result.current, 'show');
 
-    render(<HistoriesModal />);
+    render(<RecordsModal />);
     act(() => screen.getByText('Missed Drink').click());
     expect(show).toHaveBeenCalled();
   });
 
-  it('should open drink modal to update history', () => {
+  it('should open drink modal to update record', () => {
     const modal = renderHook(() => useModalStore());
     const show = vi.spyOn(modal.result.current, 'show');
 
-    const histories = renderHook(() => useHistoriesStore());
+    const records = renderHook(() => useRecordsStore());
 
-    render(<HistoriesModal />);
-    act(() => histories.result.current.drink(Date.now().toString(), 100));
-    act(() => screen.getByTestId('histories-modal-update-history').click());
+    render(<RecordsModal />);
+    act(() => records.result.current.drink(Date.now().toString(), 100));
+    act(() => screen.getByTestId('records-modal-update').click());
     expect(show).toHaveBeenCalledWith('drink', { timestamp: Date.now().toString(), hideTime: true });
   });
 
   it('should show correct stats', () => {
-    const histories = renderHook(() => useHistoriesStore());
+    const records = renderHook(() => useRecordsStore());
 
-    render(<HistoriesModal />);
-    act(() => histories.result.current.drink(Date.now().toString(), 100));
+    render(<RecordsModal />);
+    act(() => records.result.current.drink(Date.now().toString(), 100));
     expect(screen.getByText('1 Jan 2023')).toBeInTheDocument();
     expect(screen.getByText('100/2500ml · 4%')).toBeInTheDocument();
-    act(() => histories.result.current.reset());
+    act(() => records.result.current.reset());
   });
 
-  it('should remove a history', () => {
-    const histories = renderHook(() => useHistoriesStore());
-    const remove = vi.spyOn(histories.result.current, 'remove');
+  it('should remove a record', () => {
+    const records = renderHook(() => useRecordsStore());
+    const remove = vi.spyOn(records.result.current, 'remove');
 
-    render(<HistoriesModal />);
-    act(() => histories.result.current.drink(Date.now().toString(), 100));
-    expect(screen.getAllByTestId('histories-modal-item')).toHaveLength(1);
-    act(() => screen.getByTestId('histories-modal-remove-history').click());
+    render(<RecordsModal />);
+    act(() => records.result.current.drink(Date.now().toString(), 100));
+    expect(screen.getAllByTestId('records-modal-item')).toHaveLength(1);
+    act(() => screen.getByTestId('records-modal-remove').click());
     expect(remove).toHaveBeenCalledWith(Date.now().toString());
-    expect(screen.queryAllByTestId('histories-modal-item')).toHaveLength(0);
+    expect(screen.queryAllByTestId('records-modal-item')).toHaveLength(0);
   });
 });

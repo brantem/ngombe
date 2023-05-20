@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { useGoalStore, useHistoriesStore } from 'lib/stores';
+import { useGoalStore, useRecordsStore } from 'lib/stores';
 
 import 'styles/globals.css';
 import { useModal } from 'lib/hooks';
@@ -9,7 +9,7 @@ import { useModal } from 'lib/hooks';
 export default function App({ Component, pageProps }: AppProps) {
   const isDrinkModalOpen = useModal('drink').isOpen;
   const goal = useGoalStore((state) => state.goal);
-  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
+  const percentage = useRecordsStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
 
   return (
     <>

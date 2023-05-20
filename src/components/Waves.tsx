@@ -1,8 +1,8 @@
-import { useGoalStore, useHistoriesStore } from 'lib/stores';
+import { useGoalStore, useRecordsStore } from 'lib/stores';
 
 const Waves = () => {
   const goal = useGoalStore((state) => state.goal);
-  const percentage = useHistoriesStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
+  const percentage = useRecordsStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
 
   return (
     <div className="grid grid-rows-5 w-full h-full fixed inset-0">

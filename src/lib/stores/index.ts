@@ -1,3 +1,3 @@
 export * from 'lib/stores/modal';
 export * from 'lib/stores/goal';
-export * from 'lib/stores/histories';
+export * from 'lib/stores/records';

@@ -2,12 +2,12 @@ import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
 import { useGoalStore } from 'lib/stores';
 
-type HistoriesButtonProps = {
+type RecordsButtonProps = {
   isBackground?: boolean;
 };
 
-const HistoriesButton = ({ isBackground }: HistoriesButtonProps) => {
-  const modal = useModal('histories');
+const RecordsButton = ({ isBackground }: RecordsButtonProps) => {
+  const modal = useModal('records');
 
   return (
     <button
@@ -20,7 +20,7 @@ const HistoriesButton = ({ isBackground }: HistoriesButtonProps) => {
       )}
       onClick={modal.onOpen}
     >
-      Histories
+      Records
     </button>
   );
 };
@@ -54,7 +54,7 @@ const Header = ({ isBackground }: HeaderProps) => {
   return (
     <header className="w-full px-4 pt-4">
       <div className="max-w-lg w-full mx-auto flex justify-between font-bold">
-        <HistoriesButton isBackground={isBackground} />
+        <RecordsButton isBackground={isBackground} />
 
         <GoalButton isBackground={isBackground} />
       </div>

@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import DrinkModal from 'components/modals/DrinkModal';
 
-import { useHistoriesStore, useModalStore } from 'lib/stores';
+import { useRecordsStore, useModalStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -35,12 +35,12 @@ describe('DrinkModal', () => {
     vi.useRealTimers();
   });
 
-  it('should add a history', async () => {
+  it('should add a record', async () => {
     const modal = renderHook(() => useModalStore());
     act(() => modal.result.current.show('drink'));
 
-    const histories = renderHook(() => useHistoriesStore());
-    const drink = vi.spyOn(histories.result.current, 'drink');
+    const records = renderHook(() => useRecordsStore());
+    const drink = vi.spyOn(records.result.current, 'drink');
 
     render(<DrinkModal />);
     fireEvent.change(screen.getByTestId('drink-modal-value'), { target: { value: '500' } });

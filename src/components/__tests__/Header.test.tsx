@@ -15,13 +15,13 @@ describe('Header', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('should open histories modal', () => {
+  it('should open records modal', () => {
     const { result } = renderHook(() => useModalStore());
     const show = vi.spyOn(result.current, 'show');
 
     render(<Header />);
-    act(() => screen.getByText('Histories').click());
-    // expect(show).toHaveBeenCalledWith('histories'); // for some reason this is not working
+    act(() => screen.getByText('Records').click());
+    // expect(show).toHaveBeenCalledWith('records'); // for some reason this is not working
     expect(show).toHaveBeenCalled();
   });
 

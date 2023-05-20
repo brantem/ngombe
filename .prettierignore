@@ -1,3 +1,4 @@
 .next
 .vitest
 coverage
+pnpm-lock.yaml
