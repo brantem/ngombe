@@ -26,7 +26,7 @@ const RecordsModal = () => {
 
       <div
         className={cn(
-          'max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto transition-all',
+          'max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto transition-[padding-bottom]',
           /* c8 ignore next */ showWave && 'pb-4',
         )}
       >

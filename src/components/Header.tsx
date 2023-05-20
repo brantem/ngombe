@@ -33,6 +33,8 @@ const GoalButton = ({ isBackground }: GoalButtonProps) => {
   const modal = useModal('goal');
   const { goal, isReady } = useGoalStore((state) => ({ goal: state.goal, isReady: state.isReady }));
 
+  if (modal.isOpen) return null;
+
   return (
     <button
       className={cn(
