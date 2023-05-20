@@ -32,7 +32,7 @@ const DrinkModal = () => {
 
   return (
     <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[110] flex items-end">
-      <div className="fixed inset-0" aria-hidden="true" />
+      <div className="fixed inset-0 bg-black/5" aria-hidden="true" />
 
       <Dialog.Panel className={`h-full w-full flex items-center justify-center px-4 sm:px-0 ${fonts.nunito.className}`}>
         <form
