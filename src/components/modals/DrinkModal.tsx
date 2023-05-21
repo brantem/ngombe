@@ -58,6 +58,7 @@ const DrinkModal = () => {
             }
             onSubmit(date.getTime(), data.value);
             modal.onClose();
+            reset();
           })}
           className="relative bg-white shadow-sm rounded-xl border border-neutral-100 p-4 space-y-4"
         >
