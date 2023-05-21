@@ -1,1 +1,1 @@
-export const MAX_VALUE = 99999;
+export const MAX_VALUE = 9999;
