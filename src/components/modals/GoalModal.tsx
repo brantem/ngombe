@@ -15,12 +15,12 @@ const GoalModal = () => {
 
   const [value, setValue] = useState<string>();
 
-  const debouncedValue = useDebounce(value, 250);
+  const debouncedValue = useDebounce(value, 500);
   useEffect(() => {
     if (!debouncedValue) return;
     const v = parseInt(debouncedValue);
-    if (isNaN(v)) return;
-    if (v === goal) return;
+    if (isNaN(v) || v === goal) return;
+    if (v < 100 || v > constants.MAX_VALUE) return setValue(goal.toString());
     setGoal(v);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
