@@ -24,8 +24,11 @@ export const recordsStore = createStore<RecordsState>()((set, get) => ({
 
     if (value < 0) {
       if (!(timestamp in records)) return;
-      delete records[timestamp];
-      storage.delete('records', timestamp);
+      records[timestamp] += value;
+      if (records[timestamp] <= 0) {
+        delete records[timestamp];
+        storage.delete('records', timestamp);
+      }
     } else {
       if (timestamp in records) {
         records[timestamp] += value;

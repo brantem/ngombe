@@ -20,7 +20,9 @@ describe('useRecordsStore', () => {
     expect(result.current.records).toMatchObject({ [timestamp]: 100 });
     act(() => result.current.drink(timestamp, 100));
     expect(result.current.records).toMatchObject({ [timestamp]: 200 });
-    act(() => result.current.drink(timestamp, -200));
+    act(() => result.current.drink(timestamp, -100));
+    expect(result.current.records).toMatchObject({ [timestamp]: 100 });
+    act(() => result.current.drink(timestamp, -100));
     expect(result.current.records).toMatchObject({});
   });
 
