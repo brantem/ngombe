@@ -11,10 +11,7 @@ const Background = ({ className, children, ...props }: BackgroundProps) => {
 
   return (
     <div
-      className={cn(
-        'absolute top-0 right-0 left-0 bg-white h-full wave transition-[max-height] ease-linear duration-1000',
-        className,
-      )}
+      className={cn('absolute top-0 right-0 left-0 bg-white h-full wave', className)}
       {...props}
       style={{
         animationPlayState: percentage >= 100 ? 'stopped' : 'running',

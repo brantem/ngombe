@@ -1,14 +1,13 @@
 import { act, renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import { useRecordsStore } from 'lib/stores';
+import { recordsStore, useRecordsStore } from 'lib/stores';
 
-const timestamp = '1672506000000';
+const timestamp = 1672506000000;
 
 describe('useRecordsStore', () => {
   beforeEach(() => {
-    const { result } = renderHook(() => useRecordsStore());
-    act(() => result.current.reset());
+    act(() => recordsStore.setState({ records: {} }));
   });
 
   it('should upsert a record', async () => {
@@ -51,14 +50,6 @@ describe('useRecordsStore', () => {
     act(() => result.current.remove(timestamp + 1));
     expect(result.current.records).toMatchObject({ [timestamp]: 100 });
     act(() => result.current.remove(timestamp));
-    expect(result.current.records).toMatchObject({});
-  });
-
-  it('should remove all records', async () => {
-    const { result } = renderHook(() => useRecordsStore());
-    act(() => result.current.drink(timestamp, 100));
-    expect(result.current.records).toMatchObject({ [timestamp]: 100 });
-    act(() => result.current.reset());
     expect(result.current.records).toMatchObject({});
   });
 });

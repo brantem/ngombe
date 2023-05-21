@@ -34,7 +34,9 @@ const GoalModal = () => {
       }}
       className="fixed right-0 top-0 left-0 z-[100]"
     >
-      <div className="w-full relative px-4 pt-4">
+      <div className="fixed inset-0 z-10" aria-hidden="true" />
+
+      <div className="w-full relative px-4 pt-4 z-20">
         <Dialog.Panel className={`max-w-lg justify-end flex mx-auto ${fonts.nunito.className}`}>
           <div className="bg-white shadow-sm rounded-full p-2 flex items-center space-x-1 border border-neutral-100">
             <button

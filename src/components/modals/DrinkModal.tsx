@@ -14,12 +14,12 @@ type Values = {
 };
 
 const DrinkModal = () => {
-  const modal = useModal<{ timestamp?: string; hideTime: boolean }>('drink');
+  const modal = useModal<{ timestamp?: number; hideTime: boolean }>('drink');
   const { value, onSubmit } = useRecordsStore((state) => {
     const _timestamp = modal.data?.timestamp;
     return {
       value: _timestamp ? state.records[_timestamp] : 100,
-      onSubmit: (timestamp: string, value: number) => {
+      onSubmit: (timestamp: number, value: number) => {
         if (_timestamp) {
           state.update(_timestamp, value);
         } else {
@@ -56,7 +56,7 @@ const DrinkModal = () => {
               const [hour, minute] = data.time.split(':');
               date.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
             }
-            onSubmit(date.getTime().toString(), data.value);
+            onSubmit(date.getTime(), data.value);
             modal.onClose();
           })}
           className="relative bg-white shadow-sm rounded-xl border border-neutral-100 p-4 space-y-4"

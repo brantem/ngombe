@@ -17,7 +17,7 @@ describe('Stats', () => {
     const records = renderHook(() => useRecordsStore());
 
     const { container } = render(<Stats />);
-    act(() => records.result.current.drink(Date.now().toString(), 100));
+    act(() => records.result.current.drink(Date.now(), 100));
     expect(screen.getByTestId('stats-value').textContent).toEqual('100ml');
     expect(screen.getByTestId('stats-percentage').textContent).toEqual('4% of your goal');
     expect(container).toMatchSnapshot();

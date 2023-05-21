@@ -36,8 +36,7 @@ describe('RecordsModal', () => {
     const modal = renderHook(() => useModalStore());
     act(() => modal.result.current.hide('records'));
 
-    const records = renderHook(() => useRecordsStore());
-    act(() => records.result.current.reset());
+    act(() => recordsStore.setState({ records: {} }));
   });
 
   afterAll(() => {
@@ -65,19 +64,18 @@ describe('RecordsModal', () => {
     const records = renderHook(() => useRecordsStore());
 
     render(<RecordsModal />);
-    act(() => records.result.current.drink(Date.now().toString(), 100));
+    act(() => records.result.current.drink(Date.now(), 100));
     act(() => screen.getByTestId('records-modal-update').click());
-    expect(show).toHaveBeenCalledWith('drink', { timestamp: Date.now().toString(), hideTime: true });
+    expect(show).toHaveBeenCalledWith('drink', { timestamp: Date.now(), hideTime: true });
   });
 
   it('should show correct stats', () => {
     const records = renderHook(() => useRecordsStore());
 
     render(<RecordsModal />);
-    act(() => records.result.current.drink(Date.now().toString(), 100));
+    act(() => records.result.current.drink(Date.now(), 100));
     expect(screen.getByText('1 Jan 2023')).toBeInTheDocument();
     expect(screen.getByText('100/2500ml · 4%')).toBeInTheDocument();
-    act(() => records.result.current.reset());
   });
 
   it('should remove a record', () => {
@@ -85,10 +83,10 @@ describe('RecordsModal', () => {
     const remove = vi.spyOn(records.result.current, 'remove');
 
     render(<RecordsModal />);
-    act(() => records.result.current.drink(Date.now().toString(), 100));
+    act(() => records.result.current.drink(Date.now(), 100));
     expect(screen.getAllByTestId('records-modal-item')).toHaveLength(1);
     act(() => screen.getByTestId('records-modal-remove').click());
-    expect(remove).toHaveBeenCalledWith(Date.now().toString());
+    expect(remove).toHaveBeenCalledWith(Date.now());
     expect(screen.queryAllByTestId('records-modal-item')).toHaveLength(0);
   });
 });

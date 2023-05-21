@@ -26,7 +26,7 @@ const RecordsModal = () => {
 
       <div
         className={cn(
-          'max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto transition-[padding-bottom]',
+          'max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto',
           /* c8 ignore next */ showWave && 'pb-4',
         )}
       >
@@ -76,38 +76,41 @@ const RecordsModal = () => {
               <ul className={cn('space-y-3 overflow-y-auto', /* c8 ignore next */ showWave ? 'pb-12' : 'pb-3')}>
                 {keys
                   .sort((a, b) => parseInt(a) - parseInt(b))
-                  .map((timestamp, i) => (
-                    <li key={timestamp} data-testid="records-modal-item">
-                      <div className="px-4 flex justify-between items-center">
-                        <button
-                          onClick={() => drinkModal.onOpen({ timestamp, hideTime: true })}
-                          className="cursor-pointer"
-                          data-testid="records-modal-update"
-                        >
-                          <span className="font-bold text-cyan-500 text-lg">{records[timestamp]}ml</span>{' '}
-                          <span className="text-neutral-300">+{Math.round((records[timestamp] / goal) * 100)}%</span>
-                        </button>
-                        <div className="space-x-3 flex items-center">
-                          <span className="text-neutral-400">{dayjs(parseInt(timestamp)).format('H:mm')}</span>
+                  .map((key, i) => {
+                    const timestamp = parseInt(key);
+                    return (
+                      <li key={timestamp} data-testid="records-modal-item">
+                        <div className="px-4 flex justify-between items-center">
                           <button
-                            className="rounded-full h-6 w-6 bg-rose-100 text-rose-500 flex items-center justify-center"
-                            onClick={() => remove(timestamp)}
-                            data-testid="records-modal-remove"
+                            onClick={() => drinkModal.onOpen({ timestamp, hideTime: true })}
+                            className="cursor-pointer"
+                            data-testid="records-modal-update"
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              className="w-5 h-5"
-                            >
-                              <path d="M6.75 9.25a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z" />
-                            </svg>
+                            <span className="font-bold text-cyan-500 text-lg">{records[timestamp]}ml</span>{' '}
+                            <span className="text-neutral-300">+{Math.round((records[timestamp] / goal) * 100)}%</span>
                           </button>
+                          <div className="space-x-3 flex items-center">
+                            <span className="text-neutral-400">{dayjs(timestamp).format('H:mm')}</span>
+                            <button
+                              className="rounded-full h-6 w-6 bg-rose-100 text-rose-500 flex items-center justify-center"
+                              onClick={() => remove(timestamp)}
+                              data-testid="records-modal-remove"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                className="w-5 h-5"
+                              >
+                                <path d="M6.75 9.25a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5z" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                      {/* c8 ignore next */ i !== keys.length - 1 && <hr className="mt-3 w-[85%] mx-auto" />}
-                    </li>
-                  ))}
+                        {/* c8 ignore next */ i !== keys.length - 1 && <hr className="mt-3 w-[85%] mx-auto" />}
+                      </li>
+                    );
+                  })}
                 <li className="text-center text-neutral-300">That&apos;s all!</li>
               </ul>
             )}
