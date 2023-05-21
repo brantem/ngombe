@@ -38,15 +38,15 @@ const GoalModal = () => {
 
       <div className="w-full relative px-4 pt-4 z-20">
         <Dialog.Panel className={`max-w-lg justify-end flex mx-auto ${fonts.nunito.className}`}>
-          <div className="bg-white shadow-sm rounded-full p-2 flex items-center space-x-1 border border-neutral-100">
+          <div className="bg-white shadow-sm rounded-full p-2 flex items-center space-x-2 border border-neutral-100">
             <button
-              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100"
+              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100 disabled:bg-neutral-100 disabled:text-neutral-300"
               onClick={() => {
                 const v = parseInt(value || goal.toString());
-                if (isNaN(v) || v <= 0) return;
                 setValue((v - 100).toString());
               }}
               data-testid="goal-modal-decrease"
+              disabled={parseInt(value || goal.toString()) <= 100}
             >
               -
             </button>
@@ -54,18 +54,20 @@ const GoalModal = () => {
               type="number"
               value={value === undefined ? goal : value}
               onChange={(e) => setValue(e.target.value)}
-              className="text-2xl font-extrabold text-neutral-700 flex-1 w-20 text-center outline-none"
+              className="text-2xl font-extrabold text-neutral-700 flex-1 w-18 text-center outline-none"
+              min={100}
               max={constants.MAX_VALUE}
+              step={100}
               data-testid="goal-modal-input"
             />
             <button
-              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100"
+              className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100 disabled:bg-neutral-100 disabled:text-neutral-300"
               onClick={() => {
                 const v = parseInt(value || goal.toString());
-                if (isNaN(v) || v >= constants.MAX_VALUE) return;
                 setValue((v + 100).toString());
               }}
               data-testid="goal-modal-increase"
+              disabled={parseInt(value || goal.toString()) >= constants.MAX_VALUE}
             >
               +
             </button>
