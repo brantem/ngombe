@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "[ -n \"$CI\" ] || husky install",
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -19,6 +19,7 @@
     "dayjs": "^1.11.7",
     "idb": "^7.1.1",
     "next": "13.4.2",
+    "next-pwa": "^5.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
