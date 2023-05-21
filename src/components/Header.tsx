@@ -2,13 +2,11 @@ import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
 import { useGoalStore } from 'lib/stores';
 
-type RecordsButtonProps = {
+type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
   isBackground?: boolean;
 };
 
-const RecordsButton = ({ isBackground }: RecordsButtonProps) => {
-  const modal = useModal('records');
-
+const Button = ({ isBackground, ...props }: ButtonProps) => {
   return (
     <button
       className={cn(
@@ -18,10 +16,22 @@ const RecordsButton = ({ isBackground }: RecordsButtonProps) => {
           ? 'bg-neutral-100 border-neutral-200 text-neutral-500'
           : 'bg-white border-neutral-100 text-cyan-500',
       )}
-      onClick={modal.onOpen}
-    >
+      {...props}
+    />
+  );
+};
+
+type RecordsButtonProps = {
+  isBackground?: boolean;
+};
+
+const RecordsButton = ({ isBackground }: RecordsButtonProps) => {
+  const modal = useModal('records');
+
+  return (
+    <Button isBackground={isBackground} onClick={modal.onOpen}>
       Records
-    </button>
+    </Button>
   );
 };
 
@@ -36,15 +46,9 @@ const GoalButton = ({ isBackground }: GoalButtonProps) => {
   if (modal.isOpen) return null;
 
   return (
-    <button
-      className={cn(
-        'h-9 px-3 rounded-full border-2 outline-none shadow-sm min-w-[88px]',
-        /* c8 ignore next */ isBackground ? 'border-neutral-500 text-neutral-500' : 'border-cyan-500 text-cyan-500',
-      )}
-      onClick={modal.onOpen}
-    >
+    <Button isBackground={isBackground} onClick={modal.onOpen}>
       {/* c8 ignore next */ goal > 0 ? `${goal}ml` : <>&nbsp;</>}
-    </button>
+    </Button>
   );
 };
 
