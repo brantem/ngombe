@@ -6,19 +6,15 @@ import { persist } from 'zustand/middleware';
 interface GoalState {
   goal: number;
   setGoal(goal: number): void;
-
-  isReady: boolean;
 }
 
 export const goalStore = createStore<GoalState>()(
   persist(
     (set) => ({
-      goal: 0,
+      goal: 2500,
       setGoal(goal) {
         set({ goal });
       },
-
-      isReady: true,
     }),
     { name: 'goal' },
   ),
@@ -28,8 +24,6 @@ export const goalStore = createStore<GoalState>()(
 const dummy = {
   goal: 0,
   setGoal() {},
-
-  isReady: false,
 };
 
 // https://github.com/pmndrs/zustand/issues/1145

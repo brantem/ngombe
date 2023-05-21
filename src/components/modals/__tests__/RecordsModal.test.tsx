@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import RecordsModal from 'components/modals/RecordsModal';
 
-import { goalStore, useModalStore, useRecordsStore } from 'lib/stores';
+import { goalStore, useModalStore, recordsStore, useRecordsStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -24,7 +24,7 @@ describe('RecordsModal', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('1 January 2023'));
 
-    act(() => goalStore.setState({ goal: 2500, isReady: true }));
+    act(() => goalStore.setState({ goal: 2500 }));
   });
 
   beforeEach(() => {

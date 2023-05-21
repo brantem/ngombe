@@ -13,7 +13,7 @@ describe('Stats', () => {
   });
 
   it('should show correct stats', () => {
-    act(() => goalStore.setState({ goal: 2500, isReady: true }));
+    act(() => goalStore.setState({ goal: 2500 }));
     const records = renderHook(() => useRecordsStore());
 
     const { container } = render(<Stats />);

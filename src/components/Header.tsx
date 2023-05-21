@@ -31,7 +31,7 @@ type GoalButtonProps = {
 
 const GoalButton = ({ isBackground }: GoalButtonProps) => {
   const modal = useModal('goal');
-  const { goal, isReady } = useGoalStore((state) => ({ goal: state.goal, isReady: state.isReady }));
+  const goal = useGoalStore((state) => state.goal);
 
   if (modal.isOpen) return null;
 
@@ -43,7 +43,7 @@ const GoalButton = ({ isBackground }: GoalButtonProps) => {
       )}
       onClick={modal.onOpen}
     >
-      {isReady ? `${goal}ml` : <>&nbsp;</>}
+      {/* c8 ignore next */ goal > 0 ? `${goal}ml` : <>&nbsp;</>}
     </button>
   );
 };
