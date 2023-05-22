@@ -9,7 +9,6 @@ const Stats = ({ className, isBackground, ...props }: StatsProps) => {
   const goal = useGoalStore((state) => state.value);
   const { value, percentage } = useRecordsStore((state) => {
     const value = state.calcTotalValue();
-
     return { value, percentage: goal > 0 ? Math.round((value / goal) * 100) : 0 };
   });
 

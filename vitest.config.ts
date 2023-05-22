@@ -28,6 +28,7 @@ export default defineConfig({
       skipFull: true,
       all: true,
     },
+    restoreMocks: true,
     logHeapUsage: true,
   },
   resolve: {

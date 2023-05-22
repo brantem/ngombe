@@ -1,5 +1,6 @@
 import { useState, useLayoutEffect, useEffect } from 'react';
 
+/* c8 ignore next */
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export const useCurrentHeight = () => {
