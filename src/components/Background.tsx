@@ -6,7 +6,7 @@ type BackgroundProps = React.ComponentPropsWithoutRef<'div'>;
 
 const Background = ({ className, children, ...props }: BackgroundProps) => {
   const height = useCurrentHeight();
-  const goal = useGoalStore((state) => state.goal);
+  const goal = useGoalStore((state) => state.value);
   const percentage = useRecordsStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
 
   return (

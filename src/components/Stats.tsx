@@ -6,7 +6,7 @@ type StatsProps = React.ComponentPropsWithoutRef<'div'> & {
 };
 
 const Stats = ({ className, isBackground, ...props }: StatsProps) => {
-  const goal = useGoalStore((state) => state.goal);
+  const goal = useGoalStore((state) => state.value);
   const { value, percentage } = useRecordsStore((state) => {
     const value = state.calcTotalValue();
 

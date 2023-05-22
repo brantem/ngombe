@@ -8,7 +8,10 @@ import { useGoalStore, useRecordsStore } from 'lib/stores';
 
 const Date = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { date, setDate } = useRecordsStore((state) => ({ date: state.date, setDate: state.setDate }));
+  const { date, setDate } = useRecordsStore((state) => ({
+    date: state.date,
+    setDate: (date: string) => state.setDate(date === dayjs().format('YYYY-MM-DD') ? undefined : date),
+  }));
 
   return (
     <label className="cursor-pointer relative">
@@ -44,18 +47,24 @@ const Date = () => {
 const RecordsModal = () => {
   const modal = useModal('records');
   const drinkModal = useModal('drink');
-  const goal = useGoalStore((state) => state.goal);
-  const { records, remove, totalValue } = useRecordsStore((state) => ({
+  const currentGoal = useGoalStore((state) => state.value);
+  const { records, remove, totalValue, onClose } = useRecordsStore((state) => ({
     records: state.records,
     remove: state.remove,
     totalValue: state.calcTotalValue(),
+    onClose: () => {
+      modal.onClose();
+      if (state.date) state.setDate(undefined);
+    },
   }));
-  const keys = Object.keys(records);
 
-  const percentage = Math.round((totalValue / goal) * 100);
+  const keys = Object.keys(records).filter((key) => key !== 'goal');
+
+  const goal = 'goal' in records ? records.goal : currentGoal;
+  const percentage = goal > 0 ? Math.round((totalValue / goal) * 100) : 0;
 
   return (
-    <Dialog open={modal.isOpen} onClose={modal.onClose} className="fixed inset-0 z-[100] flex items-end">
+    <Dialog open={modal.isOpen} onClose={onClose} className="fixed inset-0 z-[100] flex items-end">
       <div className="fixed inset-0" aria-hidden="true" />
 
       <div className="max-h-[calc(100%-68px)] h-[50rem] w-full max-w-lg mx-auto transition-[padding-bottom]">

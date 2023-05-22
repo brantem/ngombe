@@ -7,7 +7,7 @@ import { goalStore, useModalStore } from 'lib/stores';
 
 describe('Header', () => {
   beforeAll(() => {
-    act(() => goalStore.setState({ goal: 2500 }));
+    act(() => goalStore.setState({ value: 2500 }));
   });
 
   it('should match snapshot', () => {

@@ -41,7 +41,7 @@ type GoalButtonProps = {
 
 const GoalButton = ({ isBackground }: GoalButtonProps) => {
   const modal = useModal('goal');
-  const goal = useGoalStore((state) => state.goal);
+  const goal = useGoalStore((state) => state.value);
 
   if (modal.isOpen) return null;
 

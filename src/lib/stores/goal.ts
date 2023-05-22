@@ -4,16 +4,16 @@ import { createStore } from 'zustand/vanilla';
 import { persist } from 'zustand/middleware';
 
 interface GoalState {
-  goal: number;
-  setGoal(goal: number): void;
+  value: number;
+  set(value: number): void;
 }
 
 export const goalStore = createStore<GoalState>()(
   persist(
     (set) => ({
-      goal: 2500,
-      setGoal(goal) {
-        set({ goal });
+      value: 2500,
+      set(value) {
+        set({ value });
       },
     }),
     { name: 'goal' },
@@ -22,8 +22,8 @@ export const goalStore = createStore<GoalState>()(
 
 /* c8 ignore start */
 const dummy = {
-  goal: 0,
-  setGoal() {},
+  value: 0,
+  set() {},
 };
 
 // https://github.com/pmndrs/zustand/issues/1145

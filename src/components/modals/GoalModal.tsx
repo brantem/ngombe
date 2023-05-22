@@ -8,10 +8,7 @@ import * as constants from 'data/constants';
 
 const GoalModal = () => {
   const modal = useModal('goal');
-  const { goal, setGoal } = useGoalStore((state) => ({
-    goal: state.goal,
-    setGoal: state.setGoal,
-  }));
+  const { goal, setGoal } = useGoalStore((state) => ({ goal: state.value, setGoal: state.set }));
 
   const [value, setValue] = useState<string>();
 

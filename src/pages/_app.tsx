@@ -9,7 +9,7 @@ import 'styles/globals.css';
 export default function App({ Component, pageProps }: AppProps) {
   useLoadStore();
   const isDrinkModalOpen = useModal('drink').isOpen;
-  const goal = useGoalStore((state) => state.goal);
+  const goal = useGoalStore((state) => state.value);
   const percentage = useRecordsStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
   const debouncedPercentage = useDebounce(percentage, 1000);
   // If the percentage >= 100, use the debounced value to seamlessly change the tab color. Essentially, wait until

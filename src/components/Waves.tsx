@@ -1,7 +1,7 @@
 import { useGoalStore, useRecordsStore } from 'lib/stores';
 
 const Waves = () => {
-  const goal = useGoalStore((state) => state.goal);
+  const goal = useGoalStore((state) => state.value);
   const percentage = useRecordsStore((state) => Math.round((state.calcTotalValue() / goal) * 100));
 
   return (

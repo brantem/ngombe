@@ -24,7 +24,7 @@ describe('RecordsModal', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('1 January 2023'));
 
-    act(() => goalStore.setState({ goal: 2500 }));
+    act(() => goalStore.setState({ value: 2500 }));
   });
 
   beforeEach(() => {

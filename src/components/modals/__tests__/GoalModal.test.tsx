@@ -21,7 +21,7 @@ describe('GoalModal', () => {
       disconnect() {}
     };
 
-    act(() => goalStore.setState({ goal: 2500 }));
+    act(() => goalStore.setState({ value: 2500 }));
   });
 
   beforeAll(() => {
