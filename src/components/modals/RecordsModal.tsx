@@ -1,9 +1,45 @@
+import { useRef } from 'react';
 import { Dialog } from '@headlessui/react';
 import dayjs from 'dayjs';
 
 import * as fonts from 'lib/fonts';
 import { useModal } from 'lib/hooks';
 import { useGoalStore, useRecordsStore } from 'lib/stores';
+
+const Date = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { date, setDate } = useRecordsStore((state) => ({ date: state.date, setDate: state.setDate }));
+
+  return (
+    <label className="cursor-pointer relative">
+      <input
+        ref={inputRef}
+        type="date"
+        className="sr-only left-0"
+        value={dayjs(date).format('YYYY-MM-DD')}
+        onChange={(e) => setDate(e.target.value)}
+        max={dayjs().format('YYYY-MM-DD')}
+      />
+      <div className="flex items-center justify-center" onClick={() => inputRef.current?.showPicker()}>
+        <h1 className="text-2xl font-extrabold">{dayjs(date).format('D MMM YYYY')}</h1>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6 ml-2 mb-1"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+          />
+        </svg>
+      </div>
+    </label>
+  );
+};
 
 const RecordsModal = () => {
   const modal = useModal('records');
@@ -41,8 +77,8 @@ const RecordsModal = () => {
               </svg>
             </button>
 
-            <div className="pt-4 text-center">
-              <h1 className="text-2xl font-extrabold">{dayjs().format('D MMM YYYY')}</h1>
+            <div className="pt-4 text-center flex flex-col items-center">
+              <Date />
               <p className="text-neutral-400 mt-1">
                 {totalValue}/{goal}ml &#183; {percentage}%
               </p>

@@ -1,9 +1,14 @@
 import { useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
+import dayjs from 'dayjs';
 
 import storage from 'lib/storage';
+import { Schema } from 'types/storage';
 
 interface RecordsState {
+  date: string | undefined; // YYYY-MM-DD
+  setDate(date: string | undefined): void;
+
   records: Record<number, number>;
   calcTotalValue(): number;
   drink(timestamp: number, value: number): void;
@@ -12,6 +17,19 @@ interface RecordsState {
 }
 
 export const recordsStore = createStore<RecordsState>()((set, get) => ({
+  date: undefined,
+  async setDate(date) {
+    const d = dayjs(date);
+    const query = IDBKeyRange.bound(d.startOf('day').valueOf(), d.endOf('day').valueOf());
+    set({
+      date,
+      records: ((await storage.getAll('records', query)) as Schema['records']['value'][]).reduce(
+        (records, record) => ({ ...records, [record.timestamp]: record.value }),
+        {} as Record<number, number>,
+      ),
+    });
+  },
+
   records: {},
   calcTotalValue() {
     const { records } = get();
