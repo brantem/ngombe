@@ -7,10 +7,10 @@ type StatsProps = React.ComponentPropsWithoutRef<'div'> & {
 
 const Stats = ({ className, isBackground, ...props }: StatsProps) => {
   const goal = useGoalStore((state) => state.value);
-  const { value, percentage } = useRecordsStore((state) => {
-    const value = state.calcTotalValue();
-    return { value, percentage: goal > 0 ? Math.round((value / goal) * 100) : 0 };
-  });
+  const { value, percentage } = useRecordsStore((state) => ({
+    value: state.calcTotalValue(),
+    percentage: state.calcPercentage(goal),
+  }));
 
   return (
     <div className={cn('text-center flex flex-col justify-center items-center', className)} {...props}>

@@ -11,6 +11,7 @@ interface RecordsState {
 
   records: Record<number, number> | (Record<number, number> & { goal: number });
   calcTotalValue(): number;
+  calcPercentage(goal: number): number;
   drink(timestamp: number, value: number): void;
   update(timestamp: number, value: number): void;
   remove(timestamp: number): void;
@@ -39,6 +40,11 @@ export const recordsStore = createStore<RecordsState>()((set, get) => ({
   calcTotalValue() {
     const { records } = get();
     return Object.keys(records).reduce((value, key) => (key === 'goal' ? value : value + records[key as any]), 0);
+  },
+  calcPercentage(goal) {
+    const { records, calcTotalValue } = get();
+    const _goal = 'goal' in records ? records.goal : goal;
+    return Math.round((calcTotalValue() / _goal) * 100);
   },
   drink(timestamp, value) {
     if (value === 0) return;

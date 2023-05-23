@@ -63,6 +63,20 @@ describe('useRecordsStore', () => {
     expect(result.current.calcTotalValue()).toEqual(200);
   });
 
+  it('should calc total percentage', async () => {
+    const records = { [timestamp]: 100, [timestamp + 1]: 100 };
+
+    const { result } = renderHook(() => useRecordsStore());
+
+    // should use the goal from the argument (200)
+    act(() => recordsStore.setState({ records }));
+    expect(result.current.calcPercentage(200)).toEqual(100);
+
+    // should use `records.goal` (100)
+    act(() => recordsStore.setState({ records: { goal: 100, ...records } }));
+    expect(result.current.calcPercentage(200)).toEqual(200);
+  });
+
   it('should update a record', async () => {
     const { result } = renderHook(() => useRecordsStore());
     act(() => result.current.update(timestamp, 100));

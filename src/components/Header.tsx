@@ -1,6 +1,6 @@
 import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
-import { useGoalStore } from 'lib/stores';
+import { useGoalStore, useRecordsStore } from 'lib/stores';
 
 type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
   isBackground?: boolean;
@@ -41,9 +41,11 @@ type GoalButtonProps = {
 
 const GoalButton = ({ isBackground }: GoalButtonProps) => {
   const modal = useModal('goal');
-  const goal = useGoalStore((state) => state.value);
+  const currentGoal = useGoalStore((state) => state.value);
+  const pastGoal = useRecordsStore((state) => ('goal' in state.records ? state.records.goal : undefined));
+  const goal = pastGoal || currentGoal;
 
-  if (modal.isOpen) return null;
+  if (modal.isOpen || pastGoal === 0) return null;
 
   return (
     <Button isBackground={isBackground} onClick={modal.onOpen}>
