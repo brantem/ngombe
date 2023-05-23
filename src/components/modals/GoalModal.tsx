@@ -33,7 +33,7 @@ const GoalModal = () => {
     >
       <div className="fixed inset-0 z-10" aria-hidden="true" />
 
-      <div className="max-w-lg px-4 pt-4 z-20 mx-auto flex justify-end">
+      <div className="relative max-w-lg px-4 pt-4 z-20 mx-auto flex justify-end">
         <Dialog.Panel className={fonts.nunito.className}>
           <div className="bg-white shadow-sm rounded-full p-2 flex items-center space-x-2 border border-neutral-100">
             <button
