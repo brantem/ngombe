@@ -33,8 +33,8 @@ const GoalModal = () => {
     >
       <div className="fixed inset-0 z-10" aria-hidden="true" />
 
-      <div className="w-full relative px-4 pt-4 z-20">
-        <Dialog.Panel className={`max-w-lg justify-end flex mx-auto ${fonts.nunito.className}`}>
+      <div className="max-w-lg px-4 pt-4 z-20 mx-auto flex justify-end">
+        <Dialog.Panel className={fonts.nunito.className}>
           <div className="bg-white shadow-sm rounded-full p-2 flex items-center space-x-2 border border-neutral-100">
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100 disabled:bg-neutral-100 disabled:text-neutral-300"
