@@ -73,7 +73,7 @@ const RecordsModal = () => {
             className="relative bg-white shadow-sm rounded-t-xl border border-neutral-100 h-full w-full overflow-hidden flex flex-col"
             style={{ animationDuration: '2.5s' }}
           >
-            <button className="absolute top-4 right-4" onClick={modal.onClose}>
+            <button className="absolute top-4 right-4" onClick={onClose}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -89,7 +89,13 @@ const RecordsModal = () => {
             <div className="pt-4 text-center flex flex-col items-center">
               <Date />
               <p className="text-neutral-400 mt-1">
-                {totalValue}/{goal}ml &#183; {percentage}%
+                {goal > 0 ? (
+                  <>
+                    {totalValue}/{goal}ml &#183; {percentage}%
+                  </>
+                ) : (
+                  <>{totalValue}ml</>
+                )}
               </p>
             </div>
 
@@ -122,7 +128,11 @@ const RecordsModal = () => {
                             data-testid="records-modal-update"
                           >
                             <span className="font-bold text-cyan-500 text-lg">{records[timestamp]}ml</span>{' '}
-                            <span className="text-neutral-300">+{Math.round((records[timestamp] / goal) * 100)}%</span>
+                            {goal > 0 && (
+                              <span className="text-neutral-300">
+                                +{Math.round((records[timestamp] / goal) * 100)}%
+                              </span>
+                            )}
                           </button>
                           <div className="space-x-3 flex items-center">
                             <span className="text-neutral-400">{dayjs(timestamp).format('H:mm')}</span>

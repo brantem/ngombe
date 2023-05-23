@@ -15,9 +15,10 @@ type Values = {
 
 const DrinkModal = () => {
   const modal = useModal<{ timestamp?: number; hideTime: boolean }>('drink');
-  const { value, onSubmit } = useRecordsStore((state) => {
+  const { date, value, onSubmit } = useRecordsStore((state) => {
     const _timestamp = modal.data?.timestamp;
     return {
+      date: state.date,
       value: _timestamp ? state.records[_timestamp] : 100,
       onSubmit: (timestamp: number, value: number) => {
         if (_timestamp) {
@@ -51,12 +52,12 @@ const DrinkModal = () => {
       <Dialog.Panel className={`h-full w-full flex items-center justify-center px-4 sm:px-0 ${fonts.nunito.className}`}>
         <form
           onSubmit={handleSubmit((data) => {
-            let date = new Date();
+            let d = date ? dayjs(date).toDate() : new Date();
             if (data.time) {
               const [hour, minute] = data.time.split(':');
-              date.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
+              d.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
             }
-            onSubmit(date.getTime(), data.value);
+            onSubmit(d.getTime(), data.value);
             modal.onClose();
             reset();
           })}
@@ -82,10 +83,11 @@ const DrinkModal = () => {
                 <input
                   {...register('time', {
                     validate: (v) => {
+                      if (date) return true;
                       const [hour, minute] = v.split(':');
-                      const date = new Date();
-                      date.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
-                      return date.getTime() <= Date.now();
+                      const d = new Date();
+                      d.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
+                      return d.getTime() <= Date.now();
                     },
                   })}
                   type="time"
