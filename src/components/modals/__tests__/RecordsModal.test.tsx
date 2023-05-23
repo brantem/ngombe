@@ -1,9 +1,9 @@
 import { renderHook, act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import RecordsModal from 'components/modals/RecordsModal';
+import RecordsModal, { Stats, MissedDrink, Record } from 'components/modals/RecordsModal';
 
-import { goalStore, useModalStore, recordsStore, useRecordsStore } from 'lib/stores';
+import { useDateStore, goalStore, useModalStore, recordsStore, useRecordsStore, useGoalStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -13,6 +13,68 @@ vi.mock('next/font/google', () => ({
   },
 }));
 
+const timestamp = Date.now();
+
+describe('RecordsModal/Stats', () => {
+  beforeEach(() => {
+    act(() => goalStore.setState({ value: 2500 }));
+    act(() => recordsStore.setState({ records: { [timestamp]: 100 } }));
+  });
+
+  it('should show full stats', () => {
+    render(<Stats />);
+    expect(screen.getByText('100/2500ml · 4%')).toBeInTheDocument();
+  });
+
+  it('should only show total value', () => {
+    act(() => goalStore.setState({ value: 0 }));
+
+    render(<Stats />);
+    expect(screen.getByText('100ml')).toBeInTheDocument();
+  });
+});
+
+test('RecordsModal/MissedDrink', () => {
+  const modal = renderHook(() => useModalStore());
+  const show = vi.spyOn(modal.result.current, 'show');
+
+  render(<MissedDrink />);
+  act(() => screen.getByText('Missed Drink').click());
+  expect(show).toHaveBeenCalled();
+});
+
+describe('RecordsModal/Record', () => {
+  beforeEach(() => {
+    act(() => goalStore.setState({ value: 2500 }));
+    act(() => recordsStore.setState({ records: { [timestamp]: 100 } }));
+  });
+
+  it('should hide percentage if goal === 0', () => {
+    act(() => goalStore.setState({ value: 0 }));
+
+    render(<Record timestamp={timestamp} value={100} />);
+    expect(screen.queryByTestId('records-modal-recor-percentage')).not.toBeInTheDocument();
+  });
+
+  it('should open drink modal to update record', () => {
+    const modal = renderHook(() => useModalStore());
+    const show = vi.spyOn(modal.result.current, 'show');
+
+    render(<Record timestamp={timestamp} value={100} />);
+    act(() => screen.getByTestId('records-modal-update').click());
+    expect(show).toHaveBeenCalledWith('drink', { timestamp, hideTime: true });
+  });
+
+  it('should remove a record', () => {
+    const records = renderHook(() => useRecordsStore());
+    const remove = vi.spyOn(records.result.current, 'remove');
+
+    render(<Record timestamp={timestamp} value={100} />);
+    act(() => screen.getByTestId('records-modal-remove').click());
+    expect(remove).toHaveBeenCalledWith(timestamp);
+  });
+});
+
 describe('RecordsModal', () => {
   beforeAll(() => {
     global.ResizeObserver = class ResizeObserver {
@@ -20,11 +82,6 @@ describe('RecordsModal', () => {
       unobserve() {}
       disconnect() {}
     };
-
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('1 January 2023'));
-
-    act(() => goalStore.setState({ value: 2500 }));
   });
 
   beforeEach(() => {
@@ -35,58 +92,28 @@ describe('RecordsModal', () => {
   afterEach(() => {
     const modal = renderHook(() => useModalStore());
     act(() => modal.result.current.hide('records'));
-
-    act(() => recordsStore.setState({ records: {} }));
-  });
-
-  afterAll(() => {
-    vi.useRealTimers();
   });
 
   it('should show empty list', () => {
+    act(() => recordsStore.setState({ records: {} }));
+
     render(<RecordsModal />);
     expect(screen.getByText('Nothing to see here')).toBeInTheDocument();
   });
 
-  it('should open drink modal to add missed drink', () => {
-    const modal = renderHook(() => useModalStore());
-    const show = vi.spyOn(modal.result.current, 'show');
+  it('should show render records', () => {
+    act(() => recordsStore.setState({ records: { 0: 100, 1: 100 } }));
 
     render(<RecordsModal />);
-    act(() => screen.getByText('Missed Drink').click());
-    expect(show).toHaveBeenCalled();
+    expect(screen.getAllByTestId('records-modal-record')).toHaveLength(2);
   });
 
-  it('should open drink modal to update record', () => {
-    const modal = renderHook(() => useModalStore());
-    const show = vi.spyOn(modal.result.current, 'show');
-
-    const records = renderHook(() => useRecordsStore());
+  it('should reset date modal is closed', () => {
+    const { result } = renderHook(() => useDateStore());
+    const setDate = vi.spyOn(result.current, 'setValue').mockImplementationOnce(() => {});
 
     render(<RecordsModal />);
-    act(() => records.result.current.drink(Date.now(), 100));
-    act(() => screen.getByTestId('records-modal-update').click());
-    expect(show).toHaveBeenCalledWith('drink', { timestamp: Date.now(), hideTime: true });
-  });
-
-  it('should show correct stats', () => {
-    const records = renderHook(() => useRecordsStore());
-
-    render(<RecordsModal />);
-    act(() => records.result.current.drink(Date.now(), 100));
-    expect(screen.getByText('1 Jan 2023')).toBeInTheDocument();
-    expect(screen.getByText('100/2500ml · 4%')).toBeInTheDocument();
-  });
-
-  it('should remove a record', () => {
-    const records = renderHook(() => useRecordsStore());
-    const remove = vi.spyOn(records.result.current, 'remove');
-
-    render(<RecordsModal />);
-    act(() => records.result.current.drink(Date.now(), 100));
-    expect(screen.getAllByTestId('records-modal-item')).toHaveLength(1);
-    act(() => screen.getByTestId('records-modal-remove').click());
-    expect(remove).toHaveBeenCalledWith(Date.now());
-    expect(screen.queryAllByTestId('records-modal-item')).toHaveLength(0);
+    act(() => screen.getByTestId('records-modal-close').click());
+    expect(setDate).toHaveBeenCalled();
   });
 });

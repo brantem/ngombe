@@ -12,31 +12,25 @@ describe('useRecordsStore', () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
-  it('should set date', async () => {
+  it('should fetch records', async () => {
     const timestamp = Date.now();
 
     const { result } = renderHook(() => useRecordsStore());
     expect(result.current.records).toEqual({});
 
-    vi.spyOn(storage, 'get').mockImplementationOnce(() => Promise.resolve({ timestamp, value: 2500 }));
     vi.spyOn(storage, 'getAll').mockImplementationOnce(() => Promise.resolve([{ timestamp, value: 1 }]));
-    await act(() => result.current.setDate('2023-01-01'));
-    expect(result.current.date).toEqual('2023-01-01');
-    expect(result.current.records).toEqual({ goal: 2500, [timestamp]: 1 });
+    await act(() => result.current.fetch('2023-01-01'));
+    expect(result.current.records).toEqual({ [timestamp]: 1 });
 
-    vi.spyOn(storage, 'get').mockImplementationOnce(() => Promise.resolve(undefined));
     vi.spyOn(storage, 'getAll').mockImplementationOnce(() => Promise.resolve([]));
-    await act(() => result.current.setDate('2023-01-02'));
-    expect(result.current.date).toEqual('2023-01-02');
-    expect(result.current.records).toEqual({ goal: 0 });
+    await act(() => result.current.fetch('2023-01-02'));
+    expect(result.current.records).toEqual({});
 
-    vi.spyOn(storage, 'get').mockImplementationOnce(() => Promise.resolve(undefined));
     vi.spyOn(storage, 'getAll').mockImplementationOnce(() => Promise.resolve([]));
-    await act(() => result.current.setDate(undefined));
-    expect(result.current.date).toEqual(undefined);
+    await act(() => result.current.fetch());
     expect(result.current.records).toEqual({});
   });
 
@@ -57,24 +51,10 @@ describe('useRecordsStore', () => {
   });
 
   it('should calc total value', async () => {
-    act(() => recordsStore.setState({ records: { goal: 2500, [timestamp]: 100, [timestamp + 1]: 100 } }));
+    act(() => recordsStore.setState({ records: { [timestamp]: 100, [timestamp + 1]: 100 } }));
 
     const { result } = renderHook(() => useRecordsStore());
     expect(result.current.calcTotalValue()).toEqual(200);
-  });
-
-  it('should calc total percentage', async () => {
-    const records = { [timestamp]: 100, [timestamp + 1]: 100 };
-
-    const { result } = renderHook(() => useRecordsStore());
-
-    // should use the goal from the argument (200)
-    act(() => recordsStore.setState({ records }));
-    expect(result.current.calcPercentage(200)).toEqual(100);
-
-    // should use `records.goal` (100)
-    act(() => recordsStore.setState({ records: { goal: 100, ...records } }));
-    expect(result.current.calcPercentage(200)).toEqual(200);
   });
 
   it('should update a record', async () => {

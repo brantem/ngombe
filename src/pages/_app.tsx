@@ -3,6 +3,7 @@ import Head from 'next/head';
 
 import { useLoadStore, useGoalStore, useRecordsStore } from 'lib/stores';
 import { useDebounce, useModal } from 'lib/hooks';
+import { calcPercentage } from 'lib/helpers';
 
 import 'styles/globals.css';
 
@@ -10,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useLoadStore();
   const isDrinkModalOpen = useModal('drink').isOpen;
   const goal = useGoalStore((state) => state.value);
-  const percentage = useRecordsStore((state) => state.calcPercentage(goal));
+  const percentage = useRecordsStore((state) => calcPercentage(state.calcTotalValue(), goal));
   const debouncedPercentage = useDebounce(percentage, 1000);
   // If the percentage >= 100, use the debounced value to seamlessly change the tab color. Essentially, wait until
   // the transition is finished (the waves have reached the top of the page) before changing the tab color. If the

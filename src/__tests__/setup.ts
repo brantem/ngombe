@@ -13,7 +13,7 @@ declare module 'vitest' {
 expect.extend(matchers);
 
 beforeEach(() => {
-  vi.stubGlobal('IDBKeyRange', { bound: vi.fn() });
+  vi.stubGlobal('IDBKeyRange', { bound: () => {} });
   vi.spyOn(storage, '_getDB').mockReturnValue(Promise.resolve() as any);
   vi.spyOn(storage, 'get').mockReturnValue(Promise.resolve(undefined));
   vi.spyOn(storage, 'getAll').mockReturnValue(Promise.resolve([]));

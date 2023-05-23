@@ -3,48 +3,33 @@ import { createStore } from 'zustand/vanilla';
 import dayjs from 'dayjs';
 
 import storage from 'lib/storage';
-import { goalStore } from 'lib/stores';
 
 interface RecordsState {
-  date: string | undefined; // YYYY-MM-DD
-  setDate(date: string | undefined): void;
+  fetch(date?: string): void;
 
-  records: Record<number, number> | (Record<number, number> & { goal: number });
+  records: Record<number, number>;
   calcTotalValue(): number;
-  calcPercentage(goal: number): number;
   drink(timestamp: number, value: number): void;
   update(timestamp: number, value: number): void;
   remove(timestamp: number): void;
 }
 
 export const recordsStore = createStore<RecordsState>()((set, get) => ({
-  date: undefined,
-  async setDate(date) {
+  async fetch(date) {
     const d = dayjs(date);
-    const start = d.startOf('day').valueOf();
-
-    const query = IDBKeyRange.bound(start, d.endOf('day').valueOf());
-    const [goalRow, recordRows] = await Promise.all([storage.get('goals', start), storage.getAll('records', query)]);
-    const records = recordRows.reduce(
-      (records, record) => ({ ...records, [record.timestamp]: record.value }),
-      {} as Record<number, number>,
-    );
-
+    const query = IDBKeyRange.bound(d.startOf('day').valueOf(), d.endOf('day').valueOf());
     set({
-      date,
-      records: date ? { goal: goalRow?.value || 0, ...records } : records,
+      records: (await storage.getAll('records', query)).reduce(
+        (records, record) => ({ ...records, [record.timestamp]: record.value }),
+        {} as Record<number, number>,
+      ),
     });
   },
 
   records: {},
   calcTotalValue() {
     const { records } = get();
-    return Object.keys(records).reduce((value, key) => (key === 'goal' ? value : value + records[key as any]), 0);
-  },
-  calcPercentage(goal) {
-    const { records, calcTotalValue } = get();
-    const _goal = 'goal' in records ? records.goal : goal;
-    return Math.round((calcTotalValue() / _goal) * 100);
+    return Object.keys(records).reduce((value, key) => value + records[key as any], 0);
   },
   drink(timestamp, value) {
     if (value === 0) return;
@@ -62,11 +47,6 @@ export const recordsStore = createStore<RecordsState>()((set, get) => ({
       if (timestamp in records) {
         records[timestamp] += value;
       } else {
-        if (!('goal' in records)) {
-          const goal = goalStore.getState().value;
-          storage.add('goals', { timestamp: dayjs().startOf('day').valueOf(), value: goal });
-        }
-
         records[timestamp] = value;
       }
       storage.put('records', { timestamp, value: records[timestamp] });

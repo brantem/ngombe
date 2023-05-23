@@ -1,5 +1,5 @@
 import { useGoalStore, useRecordsStore } from 'lib/stores';
-import { cn } from 'lib/helpers';
+import { calcPercentage, cn } from 'lib/helpers';
 
 type StatsProps = React.ComponentPropsWithoutRef<'div'> & {
   isBackground?: boolean;
@@ -7,10 +7,8 @@ type StatsProps = React.ComponentPropsWithoutRef<'div'> & {
 
 const Stats = ({ className, isBackground, ...props }: StatsProps) => {
   const goal = useGoalStore((state) => state.value);
-  const { value, percentage } = useRecordsStore((state) => ({
-    value: state.calcTotalValue(),
-    percentage: state.calcPercentage(goal),
-  }));
+  const value = useRecordsStore((state) => state.calcTotalValue());
+  const percentage = calcPercentage(value, goal);
 
   return (
     <div className={cn('text-center flex flex-col justify-center items-center', className)} {...props}>

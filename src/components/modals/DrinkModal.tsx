@@ -1,12 +1,17 @@
 import { Dialog } from '@headlessui/react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormState } from 'react-hook-form';
 import dayjs from 'dayjs';
 
 import * as fonts from 'lib/fonts';
 import { useModal } from 'lib/hooks';
-import { useRecordsStore } from 'lib/stores';
+import { useDateStore, useRecordsStore } from 'lib/stores';
 import { cn } from 'lib/helpers';
 import * as constants from 'data/constants';
+
+type Data = {
+  timestamp?: number;
+  hideTime: boolean;
+};
 
 type Values = {
   value: number;
@@ -14,13 +19,13 @@ type Values = {
 };
 
 const DrinkModal = () => {
-  const modal = useModal<{ timestamp?: number; hideTime: boolean }>('drink');
-  const { date, value, onSubmit } = useRecordsStore((state) => {
+  const modal = useModal<Data>('drink');
+  const date = useDateStore((state) => state.value);
+  const { values, upsert } = useRecordsStore((state) => {
     const _timestamp = modal.data?.timestamp;
     return {
-      date: state.date,
-      value: _timestamp ? state.records[_timestamp] : 100,
-      onSubmit: (timestamp: number, value: number) => {
+      values: { value: _timestamp ? state.records[_timestamp] : 100, time: dayjs().format('HH:mm') },
+      upsert: (timestamp: number, value: number) => {
         if (_timestamp) {
           state.update(_timestamp, value);
         } else {
@@ -29,12 +34,8 @@ const DrinkModal = () => {
       },
     };
   });
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Values>({ values: { value, time: dayjs().format('HH:mm') } });
+  const { register, handleSubmit, reset, control } = useForm<Values>({ values });
+  const { errors } = useFormState({ control });
 
   const hideTime = modal.data?.hideTime;
 
@@ -57,7 +58,7 @@ const DrinkModal = () => {
               const [hour, minute] = data.time.split(':');
               d.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
             }
-            onSubmit(d.getTime(), data.value);
+            upsert(d.getTime(), data.value);
             modal.onClose();
             reset();
           })}

@@ -7,7 +7,7 @@ class Storage {
   db: IDBPDatabase<Schema> | undefined;
 
   _getDB() {
-    return openDB('ngombe', 1, {
+    return openDB<Schema>('ngombe', 1, {
       async upgrade(db) {
         db.createObjectStore('goals', { keyPath: 'timestamp' });
 

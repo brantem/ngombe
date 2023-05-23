@@ -1,6 +1,6 @@
 import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
-import { useGoalStore, useRecordsStore } from 'lib/stores';
+import { useDateStore, useGoalStore } from 'lib/stores';
 
 type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
   isBackground?: boolean;
@@ -29,7 +29,7 @@ const RecordsButton = ({ isBackground }: RecordsButtonProps) => {
   const modal = useModal('records');
 
   return (
-    <Button isBackground={isBackground} onClick={modal.onOpen}>
+    <Button isBackground={isBackground} onClick={modal.onOpen} data-testid="header-records">
       Records
     </Button>
   );
@@ -41,14 +41,13 @@ type GoalButtonProps = {
 
 const GoalButton = ({ isBackground }: GoalButtonProps) => {
   const modal = useModal('goal');
-  const currentGoal = useGoalStore((state) => state.value);
-  const pastGoal = useRecordsStore((state) => ('goal' in state.records ? state.records.goal : undefined));
-  const goal = pastGoal || currentGoal;
+  const date = useDateStore((state) => state.value);
+  const goal = useGoalStore((state) => state.value);
 
-  if (modal.isOpen || pastGoal === 0) return null;
+  if (modal.isOpen || (date && goal === 0)) return null;
 
   return (
-    <Button isBackground={isBackground} onClick={modal.onOpen}>
+    <Button isBackground={isBackground} onClick={modal.onOpen} data-testid="header-goal">
       {/* c8 ignore next */ goal > 0 ? `${goal}ml` : <>&nbsp;</>}
     </Button>
   );
