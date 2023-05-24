@@ -7,7 +7,7 @@ import { useModal } from 'lib/hooks';
 import { useDateStore, useGoalStore, useRecordsStore } from 'lib/stores';
 import { calcPercentage } from 'lib/helpers';
 
-export const Stats = () => {
+export const Header = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { date, setDate } = useDateStore((state) => ({ date: state.value, setDate: state.set }));
   const goal = useGoalStore((state) => state.value);
@@ -151,7 +151,7 @@ const RecordsModal = () => {
               </svg>
             </button>
 
-            <Stats />
+            <Header />
 
             <MissedDrink />
 

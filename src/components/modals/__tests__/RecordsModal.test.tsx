@@ -1,7 +1,7 @@
 import { renderHook, act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import RecordsModal, { Stats, MissedDrink, Record } from 'components/modals/RecordsModal';
+import RecordsModal, { Header, MissedDrink, Record } from 'components/modals/RecordsModal';
 
 import { useDateStore, goalStore, useModalStore, recordsStore, useRecordsStore, useGoalStore } from 'lib/stores';
 
@@ -15,21 +15,21 @@ vi.mock('next/font/google', () => ({
 
 const timestamp = Date.now();
 
-describe('RecordsModal/Stats', () => {
+describe('RecordsModal/Header', () => {
   beforeEach(() => {
     act(() => goalStore.setState({ value: 2500 }));
     act(() => recordsStore.setState({ records: { [timestamp]: 100 } }));
   });
 
-  it('should show full stats', () => {
-    render(<Stats />);
+  it('should show full header', () => {
+    render(<Header />);
     expect(screen.getByText('100/2500ml · 4%')).toBeInTheDocument();
   });
 
   it('should only show total value', () => {
     act(() => goalStore.setState({ value: 0 }));
 
-    render(<Stats />);
+    render(<Header />);
     expect(screen.getByText('100ml')).toBeInTheDocument();
   });
 });
