@@ -46,7 +46,7 @@ const DrinkModal = () => {
       open={modal.isOpen}
       /* c8 ignore next 4 */
       onClose={() => {
-        modal.onClose();
+        modal.hide();
         reset();
       }}
       className="fixed inset-0 z-[110] flex items-end"
@@ -62,7 +62,7 @@ const DrinkModal = () => {
               d.setHours(parseInt(hour, 10), parseInt(minute, 10), 0, 0);
             }
             upsert(d.getTime(), data.value);
-            modal.onClose();
+            modal.hide();
             reset();
           })}
           className="relative bg-white shadow-sm rounded-xl border border-neutral-100 p-4 space-y-4"

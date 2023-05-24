@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { renderHook, act, render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
@@ -22,17 +23,9 @@ describe('DrinkModal', () => {
     };
   });
 
-  beforeAll(() => {
-    vi.useFakeTimers();
-  });
-
   afterEach(() => {
     const modal = renderHook(() => useModalStore());
     act(() => modal.result.current.hide('drink'));
-  });
-
-  afterAll(() => {
-    vi.useRealTimers();
   });
 
   it('should add a record', async () => {
@@ -44,11 +37,11 @@ describe('DrinkModal', () => {
 
     render(<DrinkModal />);
     fireEvent.change(screen.getByTestId('drink-modal-value'), { target: { value: '500' } });
-    fireEvent.change(screen.getByTestId('drink-modal-time'), { target: { value: '01:01' } });
+    fireEvent.change(screen.getByTestId('drink-modal-time'), { target: { value: dayjs().format('HH:mm') } });
     act(() => screen.getByText('Drink').click());
     const date = new Date();
     date.setHours(1, 1, 0, 0);
-    // expect(drink).toHaveBeenCalledWith(date.getTime(), 500); // not working
+    // expect(drink).toHaveBeenCalledWith(date.getTime(), 500); // TODO: not working
   });
 
   it('should hide time', async () => {

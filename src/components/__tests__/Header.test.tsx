@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import Header from 'components/Header';
 
-import { useModalStore, goalStore, useGoalStore, useDateStore } from 'lib/stores';
+import { useModalStore, goalStore, useDateStore } from 'lib/stores';
 
 describe('Header', () => {
   beforeEach(() => {
@@ -21,8 +21,7 @@ describe('Header', () => {
 
     render(<Header />);
     act(() => screen.getByTestId('header-records').click());
-    // expect(show).toHaveBeenCalledWith('records'); // for some reason this is not working
-    expect(show).toHaveBeenCalled();
+    expect(show).toHaveBeenCalledWith('records', undefined);
   });
 
   it('should open hide goal button while viewing past date and goal === 0', () => {
@@ -36,13 +35,12 @@ describe('Header', () => {
     act(() => date.result.current.set(undefined));
   });
 
-  it('should open goal modal', () => {
+  it('should open goal modal', async () => {
     const { result } = renderHook(() => useModalStore());
-    const show = vi.spyOn(result.current, 'show');
+    const show = vi.spyOn(result.current, 'show').mockImplementationOnce(() => {});
 
     render(<Header />);
     act(() => screen.getByTestId('header-goal').click());
-    // expect(show).toHaveBeenCalledWith('current-goal'); // for some reason this is not working
-    expect(show).toHaveBeenCalled();
+    expect(show).toHaveBeenCalledWith('current-goal', undefined);
   });
 });

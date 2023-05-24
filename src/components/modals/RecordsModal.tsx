@@ -43,7 +43,7 @@ export const Header = () => {
           </svg>
         </div>
       </label>
-      <div className="flex items-center mt-1 space-x-2" onClick={modal.onOpen}>
+      <div className="flex items-center mt-1 space-x-2" onClick={() => modal.show()} data-testid="records-modal-stats">
         <p className="text-neutral-400">
           {goal > 0 ? `${totalValue}/${goal}ml · ${calcPercentage(totalValue, goal)}%` : `${totalValue}ml`}
         </p>
@@ -74,7 +74,7 @@ export const MissedDrink = () => {
     <div className="flex justify-center mx-auto mt-4 mb-6">
       <button
         className="flex items-center rounded-full bg-cyan-100 text-cyan-500 border border-cyan-200 pl-1.5 pr-3 py-1 text-sm"
-        onClick={modal.onOpen}
+        onClick={() => modal.show()}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 mr-1">
           <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
@@ -100,7 +100,7 @@ export const Record = ({ timestamp, value, isLast }: RecordProps) => {
     <li data-testid="records-modal-record">
       <div className="px-4 flex justify-between items-center">
         <button
-          onClick={() => modal.onOpen({ timestamp, hideTime: true })}
+          onClick={() => modal.show({ timestamp, hideTime: true })}
           className="cursor-pointer"
           data-testid="records-modal-update"
         >
@@ -136,7 +136,7 @@ const RecordsModal = () => {
   const keys = Object.keys(records);
 
   const handleClose = () => {
-    modal.onClose();
+    modal.hide();
     setDate(undefined);
   };
 

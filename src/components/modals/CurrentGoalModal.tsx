@@ -30,7 +30,7 @@ const CurrentGoalModal = () => {
       /* c8 ignore next 4 */
       onClose={() => {
         setValue(undefined);
-        modal.onClose();
+        modal.hide();
       }}
       className="fixed right-0 top-0 left-0 z-[100]"
     >

@@ -106,6 +106,4 @@ describe('CurrentGoalModal', () => {
     act(() => vi.advanceTimersByTime(500));
     expect(set).toHaveBeenCalledWith(undefined, 2501);
   });
-
-  // TODO: value <= constants.MAX_VALUE
 });

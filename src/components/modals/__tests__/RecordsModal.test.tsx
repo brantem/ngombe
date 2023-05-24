@@ -32,6 +32,15 @@ describe('RecordsModal/Header', () => {
     render(<Header />);
     expect(screen.getByText('100ml')).toBeInTheDocument();
   });
+
+  it('should open goal modal', () => {
+    const modal = renderHook(() => useModalStore());
+    const show = vi.spyOn(modal.result.current, 'show');
+
+    render(<Header />);
+    act(() => screen.getByTestId('records-modal-stats').click());
+    expect(show).toHaveBeenCalledWith('goal', undefined);
+  });
 });
 
 test('RecordsModal/MissedDrink', () => {
@@ -40,7 +49,7 @@ test('RecordsModal/MissedDrink', () => {
 
   render(<MissedDrink />);
   act(() => screen.getByText('Missed Drink').click());
-  expect(show).toHaveBeenCalled();
+  expect(show).toHaveBeenCalledWith('drink', undefined);
 });
 
 describe('RecordsModal/Record', () => {
@@ -114,6 +123,6 @@ describe('RecordsModal', () => {
 
     render(<RecordsModal />);
     act(() => screen.getByTestId('records-modal-close').click());
-    expect(set).toHaveBeenCalled();
+    expect(set).toHaveBeenCalledWith(undefined);
   });
 });

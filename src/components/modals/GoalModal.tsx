@@ -25,7 +25,7 @@ const GoalModal = () => {
       open={modal.isOpen}
       /* c8 ignore next 4 */
       onClose={() => {
-        modal.onClose();
+        modal.hide();
         reset();
       }}
       className="fixed inset-0 z-[110] flex items-end"
@@ -36,7 +36,7 @@ const GoalModal = () => {
         <form
           onSubmit={handleSubmit((data) => {
             setGoal(date, data.value);
-            modal.onClose();
+            modal.hide();
             reset();
           })}
           className="relative bg-white shadow-sm rounded-xl border border-neutral-100 p-4 space-y-4"

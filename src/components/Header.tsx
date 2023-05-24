@@ -3,6 +3,7 @@ import { useModal } from 'lib/hooks';
 import { useDateStore, useGoalStore } from 'lib/stores';
 
 type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
+  onClick?: () => void;
   isBackground?: boolean;
 };
 
@@ -29,7 +30,7 @@ const RecordsButton = ({ isBackground }: RecordsButtonProps) => {
   const modal = useModal('records');
 
   return (
-    <Button isBackground={isBackground} onClick={modal.onOpen} data-testid="header-records">
+    <Button isBackground={isBackground} onClick={() => modal.show()} data-testid="header-records">
       Records
     </Button>
   );
@@ -47,7 +48,7 @@ const GoalButton = ({ isBackground }: GoalButtonProps) => {
   if (modal.isOpen || (date && goal === 0)) return null;
 
   return (
-    <Button isBackground={isBackground} onClick={modal.onOpen} data-testid="header-goal">
+    <Button isBackground={isBackground} onClick={() => modal.show()} data-testid="header-goal">
       {/* c8 ignore next */ goal > 0 ? `${goal}ml` : <>&nbsp;</>}
     </Button>
   );
