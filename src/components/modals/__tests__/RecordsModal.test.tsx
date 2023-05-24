@@ -110,10 +110,10 @@ describe('RecordsModal', () => {
 
   it('should reset date modal is closed', () => {
     const { result } = renderHook(() => useDateStore());
-    const setDate = vi.spyOn(result.current, 'setValue').mockImplementationOnce(() => {});
+    const set = vi.spyOn(result.current, 'set').mockImplementationOnce(() => {});
 
     render(<RecordsModal />);
     act(() => screen.getByTestId('records-modal-close').click());
-    expect(setDate).toHaveBeenCalled();
+    expect(set).toHaveBeenCalled();
   });
 });

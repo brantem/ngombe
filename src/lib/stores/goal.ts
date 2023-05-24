@@ -8,7 +8,7 @@ interface GoalState {
   fetch(date?: string): void;
 
   value: number;
-  set(value: number): void;
+  set(date: string | undefined, value: number): void;
 }
 
 export const goalStore = createStore<GoalState>()((set) => ({
@@ -21,9 +21,11 @@ export const goalStore = createStore<GoalState>()((set) => ({
   },
 
   value: 2500,
-  set(value) {
+  set(date, value) {
     set({ value });
-    localStorage.setItem('goal', value.toString());
+    const d = dayjs(date);
+    if (d.isSame(dayjs())) localStorage.setItem('goal', value.toString());
+    storage.put('goals', { timestamp: d.startOf('day').valueOf(), value });
   },
 }));
 

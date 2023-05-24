@@ -1,5 +1,5 @@
 import { create as actualCreate, StateCreator } from 'zustand';
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 
 const storeResetFns = new Set<() => void>();
 

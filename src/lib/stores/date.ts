@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { goalStore, recordsStore } from 'lib/stores';
 
 type DateState = {
-  value: string | undefined;
+  value: string | undefined; // YYYY-MM-DD
   set(value: string | undefined): void;
 };
 

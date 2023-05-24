@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect, useEffect } from 'react';
 
-/* c8 ignore next */
+/* c8 ignore start */
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export const useCurrentHeight = () => {
@@ -22,6 +22,7 @@ export const useCurrentHeight = () => {
 
   return height;
 };
+/* c8 ignore end */
 
 export const useDebounce = <T extends any>(value: T, delay: number): T => {
   const [debouncedValue, setDebouncedValue] = useState(value);

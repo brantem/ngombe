@@ -39,13 +39,30 @@ describe('useGoalStore', () => {
   });
 
   it('should set goal', async () => {
+    vi.spyOn(storage, 'put').mockReturnValue(Promise.resolve(0));
+
     const setItem = vi.fn();
     vi.stubGlobal('localStorage', { setItem });
 
     const { result } = renderHook(() => useGoalStore());
     expect(result.current.value).toEqual(2500);
-    act(() => result.current.set(3000));
+    act(() => result.current.set(undefined, 3000));
     expect(setItem).toHaveBeenCalledWith('goal', '3000');
+    expect(storage.put).toHaveBeenCalledWith('goals', { timestamp: dayjs().startOf('day').valueOf(), value: 3000 });
     expect(result.current.value).toEqual(3000);
+  });
+
+  it('should set goal for past date', async () => {
+    vi.spyOn(storage, 'put').mockReturnValue(Promise.resolve(0));
+
+    const setItem = vi.fn();
+    vi.stubGlobal('localStorage', { setItem });
+
+    const date = '2023-01-02';
+    const { result } = renderHook(() => useGoalStore());
+    act(() => result.current.set(date, 2000));
+    expect(setItem).not.toHaveBeenCalled();
+    expect(storage.put).toHaveBeenCalledWith('goals', { timestamp: dayjs(date).startOf('day').valueOf(), value: 2000 });
+    expect(result.current.value).toEqual(2000);
   });
 });
