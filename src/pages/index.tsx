@@ -5,7 +5,7 @@ import Stats from 'components/Stats';
 import Footer from 'components/Footer';
 import DrinkModal from 'components/modals/DrinkModal';
 import RecordsModal from 'components/modals/RecordsModal';
-import GoalModal from 'components/modals/GoalModal';
+import CurrentGoalModal from 'components/modals/CurrentGoalModal';
 
 import * as fonts from 'lib/fonts';
 
@@ -36,7 +36,7 @@ export default function Home() {
 
       <DrinkModal />
       <RecordsModal />
-      <GoalModal />
+      <CurrentGoalModal />
     </>
   );
 }

@@ -16,7 +16,7 @@ export const goalStore = createStore<GoalState>()((set) => ({
     set({
       value: date
         ? (await storage.get('goals', dayjs(date).startOf('day').valueOf()))?.value || 0
-        : parseInt(localStorage.getItem('goal') || '2500'),
+        : parseInt(localStorage.getItem('current-goal') || '2500'),
     });
   },
 
@@ -24,7 +24,7 @@ export const goalStore = createStore<GoalState>()((set) => ({
   set(date, value) {
     set({ value });
     const d = dayjs(date);
-    if (d.isSame(dayjs())) localStorage.setItem('goal', value.toString());
+    if (d.isSame(dayjs())) localStorage.setItem('current-goal', value.toString());
     storage.put('goals', { timestamp: d.startOf('day').valueOf(), value });
   },
 }));

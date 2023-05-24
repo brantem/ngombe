@@ -5,7 +5,7 @@ import { goalStore, recordsStore } from 'lib/stores';
 /* c8 ignore start */
 export const useLoadStore = () => {
   useEffect(() => {
-    if (!localStorage.getItem('goal')) localStorage.setItem('goal', '2500');
+    if (!localStorage.getItem('current-goal')) localStorage.setItem('current-goal', '2500');
     goalStore.getState().fetch();
     recordsStore.getState().fetch();
   }, []);

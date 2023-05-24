@@ -1,7 +1,7 @@
 import { renderHook, act, render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import GoalModal from 'components/modals/GoalModal';
+import CurrentGoalModal from 'components/modals/CurrentGoalModal';
 
 import { goalStore, useGoalStore, useModalStore } from 'lib/stores';
 import * as constants from 'data/constants';
@@ -14,7 +14,7 @@ vi.mock('next/font/google', () => ({
   },
 }));
 
-describe('GoalModal', () => {
+describe('CurrentGoalModal', () => {
   beforeAll(() => {
     global.ResizeObserver = class ResizeObserver {
       observe() {}
@@ -31,12 +31,12 @@ describe('GoalModal', () => {
     act(() => goalStore.setState({ value: 2500 }));
 
     const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('goal'));
+    act(() => modal.result.current.show('current-goal'));
   });
 
   afterEach(() => {
     const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.hide('goal'));
+    act(() => modal.result.current.hide('current-goal'));
 
     vi.restoreAllMocks();
   });
@@ -49,10 +49,10 @@ describe('GoalModal', () => {
     const goal = renderHook(() => useGoalStore());
     const set = vi.spyOn(goal.result.current, 'set').mockImplementationOnce(() => {});
 
-    render(<GoalModal />);
-    expect(screen.getByTestId('goal-modal-input')).toHaveValue(2500);
-    act(() => screen.getByTestId('goal-modal-decrease').click());
-    expect(screen.getByTestId('goal-modal-input')).toHaveValue(2400);
+    render(<CurrentGoalModal />);
+    expect(screen.getByTestId('current-goal-modal-input')).toHaveValue(2500);
+    act(() => screen.getByTestId('current-goal-modal-decrease').click());
+    expect(screen.getByTestId('current-goal-modal-input')).toHaveValue(2400);
     act(() => vi.advanceTimersByTime(500));
     expect(set).toHaveBeenCalledWith(undefined, 2400);
   });
@@ -61,10 +61,10 @@ describe('GoalModal', () => {
     const goal = renderHook(() => useGoalStore());
     const set = vi.spyOn(goal.result.current, 'set').mockImplementationOnce(() => {});
 
-    render(<GoalModal />);
-    expect(screen.getByTestId('goal-modal-input')).toHaveValue(2500);
-    act(() => screen.getByTestId('goal-modal-increase').click());
-    expect(screen.getByTestId('goal-modal-input')).toHaveValue(2600);
+    render(<CurrentGoalModal />);
+    expect(screen.getByTestId('current-goal-modal-input')).toHaveValue(2500);
+    act(() => screen.getByTestId('current-goal-modal-increase').click());
+    expect(screen.getByTestId('current-goal-modal-input')).toHaveValue(2600);
     act(() => vi.advanceTimersByTime(500));
     expect(set).toHaveBeenCalledWith(undefined, 2600);
   });
@@ -73,8 +73,8 @@ describe('GoalModal', () => {
     const goal = renderHook(() => useGoalStore());
     const set = vi.spyOn(goal.result.current, 'set').mockImplementation(() => {});
 
-    render(<GoalModal />);
-    const input = screen.getByTestId('goal-modal-input');
+    render(<CurrentGoalModal />);
+    const input = screen.getByTestId('current-goal-modal-input');
     expect(input).toHaveValue(2500);
 
     // same value

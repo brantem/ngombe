@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 
-import { useDateStore, useGoalStore } from 'lib/stores';
+import { useGoalStore } from 'lib/stores';
 import { useDebounce, useModal } from 'lib/hooks';
 import * as fonts from 'lib/fonts';
 import * as constants from 'data/constants';
 import { cn } from 'lib/helpers';
 
-const GoalModal = () => {
-  const modal = useModal('goal');
-  const date = useDateStore((state) => state.value);
+const CurrentGoalModal = () => {
+  const modal = useModal('current-goal');
   const { goal, setGoal } = useGoalStore((state) => ({ goal: state.value, setGoal: state.set }));
 
   const [value, setValue] = useState<string>();
@@ -21,7 +20,7 @@ const GoalModal = () => {
     if (!debouncedValue) return;
     const v = parseInt(debouncedValue);
     if (!isValueInRange(v)) return;
-    setGoal(date, v);
+    setGoal(undefined, v);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
@@ -53,7 +52,7 @@ const GoalModal = () => {
                 const v = parseInt(value || goal.toString());
                 setValue((v - 100).toString());
               }}
-              data-testid="goal-modal-decrease"
+              data-testid="current-goal-modal-decrease"
               disabled={parseInt(value || goal.toString()) <= 100}
             >
               -
@@ -66,7 +65,7 @@ const GoalModal = () => {
               min={100}
               max={constants.MAX_VALUE}
               step={100}
-              data-testid="goal-modal-input"
+              data-testid="current-goal-modal-input"
             />
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100 disabled:bg-neutral-100 disabled:text-neutral-300"
@@ -74,7 +73,7 @@ const GoalModal = () => {
                 const v = parseInt(value || goal.toString());
                 setValue((v + 100).toString());
               }}
-              data-testid="goal-modal-increase"
+              data-testid="current-goal-modal-increase"
               disabled={parseInt(value || goal.toString()) >= constants.MAX_VALUE}
             >
               +
@@ -86,4 +85,4 @@ const GoalModal = () => {
   );
 };
 
-export default GoalModal;
+export default CurrentGoalModal;

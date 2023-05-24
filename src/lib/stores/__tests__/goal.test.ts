@@ -29,12 +29,12 @@ describe('useGoalStore', () => {
 
     vi.stubGlobal('localStorage', { getItem: vi.fn().mockReturnValue(null) });
     await act(() => result.current.fetch());
-    expect(localStorage.getItem).toHaveBeenCalledWith('goal');
+    expect(localStorage.getItem).toHaveBeenCalledWith('current-goal');
     expect(result.current.value).toEqual(2500);
 
     vi.stubGlobal('localStorage', { getItem: vi.fn().mockReturnValue('1000') });
     await act(() => result.current.fetch());
-    expect(localStorage.getItem).toHaveBeenCalledWith('goal');
+    expect(localStorage.getItem).toHaveBeenCalledWith('current-goal');
     expect(result.current.value).toEqual(1000);
   });
 
@@ -47,7 +47,7 @@ describe('useGoalStore', () => {
     const { result } = renderHook(() => useGoalStore());
     expect(result.current.value).toEqual(2500);
     act(() => result.current.set(undefined, 3000));
-    expect(setItem).toHaveBeenCalledWith('goal', '3000');
+    expect(setItem).toHaveBeenCalledWith('current-goal', '3000');
     expect(storage.put).toHaveBeenCalledWith('goals', { timestamp: dayjs().startOf('day').valueOf(), value: 3000 });
     expect(result.current.value).toEqual(3000);
   });

@@ -42,7 +42,7 @@ describe('Header', () => {
 
     render(<Header />);
     act(() => screen.getByTestId('header-goal').click());
-    // expect(show).toHaveBeenCalledWith('goal'); // for some reason this is not working
+    // expect(show).toHaveBeenCalledWith('current-goal'); // for some reason this is not working
     expect(show).toHaveBeenCalled();
   });
 });

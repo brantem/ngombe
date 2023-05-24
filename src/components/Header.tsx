@@ -40,7 +40,7 @@ type GoalButtonProps = {
 };
 
 const GoalButton = ({ isBackground }: GoalButtonProps) => {
-  const modal = useModal('goal');
+  const modal = useModal('current-goal');
   const date = useDateStore((state) => state.value);
   const goal = useGoalStore((state) => state.value);
 
