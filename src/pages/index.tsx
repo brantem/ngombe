@@ -6,6 +6,7 @@ import Footer from 'components/Footer';
 import DrinkModal from 'components/modals/DrinkModal';
 import RecordsModal from 'components/modals/RecordsModal';
 import CurrentGoalModal from 'components/modals/CurrentGoalModal';
+import GoalModal from 'components/modals/GoalModal';
 
 import * as fonts from 'lib/fonts';
 
@@ -37,6 +38,7 @@ export default function Home() {
       <DrinkModal />
       <RecordsModal />
       <CurrentGoalModal />
+      <GoalModal />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { useLoadStore, useGoalStore, useRecordsStore } from 'lib/stores';
+import { useLoadStore, useModalStore, useGoalStore, useRecordsStore } from 'lib/stores';
 import { useDebounce, useModal } from 'lib/hooks';
 import { calcPercentage } from 'lib/helpers';
 
@@ -9,7 +9,7 @@ import 'styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   useLoadStore();
-  const isDrinkModalOpen = useModal('drink').isOpen;
+  const isSomeModalWithOverlayOpen = useModalStore((state) => ['goal', 'drink'].some((id) => state.items.has(id)));
   const goal = useGoalStore((state) => state.value);
   const percentage = useRecordsStore((state) => calcPercentage(state.calcTotalValue(), goal));
   const debouncedPercentage = useDebounce(percentage, 1000);
@@ -39,7 +39,13 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta
           name="theme-color"
           content={
-            hasReachedGoal ? (isDrinkModalOpen ? '#c6edf1' : '#cffafe') : isDrinkModalOpen ? '#f2f2f2' : '#ffffff'
+            hasReachedGoal
+              ? isSomeModalWithOverlayOpen
+                ? '#c6edf1'
+                : '#cffafe'
+              : isSomeModalWithOverlayOpen
+              ? '#f2f2f2'
+              : '#ffffff'
           }
         />
       </Head>

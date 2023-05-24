@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Input 1`] = `
+<div>
+  <label
+    class="flex flex-col"
+  >
+    <span
+      class="mb-1 text-neutral-500"
+    >
+      Label
+    </span>
+    <input
+      class="text-2xl font-extrabold text-neutral-700 outline-none rounded-xl h-12 px-3 border-2 border-neutral-200"
+    />
+  </label>
+</div>
+`;
+
+exports[`Stats > should show correct stats 1`] = `
+<div>
+  <div
+    class="text-center flex flex-col justify-center items-center"
+  >
+    <h1
+      class="tabular-nums text-7xl font-extrabold text-cyan-600"
+      data-testid="stats-value"
+    >
+      100
+      ml
+    </h1>
+    <p
+      class="tabular-nums text-2xl text-cyan-500"
+      data-testid="stats-percentage"
+    >
+      4
+      % of your goal
+    </p>
+  </div>
+</div>
+`;
