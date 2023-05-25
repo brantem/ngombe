@@ -3,6 +3,7 @@ import { createStore } from 'zustand/vanilla';
 import dayjs from 'dayjs';
 
 import storage from 'lib/storage';
+import { goalStore } from 'lib/stores/goal';
 
 interface RecordsState {
   fetch(date?: string): void;
@@ -35,6 +36,7 @@ export const recordsStore = createStore<RecordsState>()((set, get) => ({
     if (value === 0) return;
 
     const records = get().records;
+    let shouldSetDrink = false;
 
     if (value < 0) {
       if (!(timestamp in records)) return;
@@ -42,14 +44,22 @@ export const recordsStore = createStore<RecordsState>()((set, get) => ({
       if (records[timestamp] <= 0) {
         delete records[timestamp];
         storage.delete('records', timestamp);
+      } else {
+        storage.put('records', { timestamp, value: records[timestamp] });
       }
     } else {
       if (timestamp in records) {
         records[timestamp] += value;
       } else {
+        shouldSetDrink = Object.keys(records).length === 0;
         records[timestamp] = value;
       }
       storage.put('records', { timestamp, value: records[timestamp] });
+    }
+
+    if (shouldSetDrink) {
+      const { value, set } = goalStore.getState();
+      set(dayjs(timestamp).startOf('day').format('YYYY-MM-DD'), value);
     }
 
     set({ records });

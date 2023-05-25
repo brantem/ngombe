@@ -24,7 +24,7 @@ describe('Header', () => {
     expect(show).toHaveBeenCalledWith('records', undefined);
   });
 
-  it('should open hide goal button while viewing past date and goal === 0', () => {
+  it('should hide goal button while viewing past date and goal === 0', () => {
     act(() => goalStore.setState({ value: 0 }));
 
     const date = renderHook(() => useDateStore());
