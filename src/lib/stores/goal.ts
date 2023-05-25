@@ -20,7 +20,7 @@ export const goalStore = createStore<GoalState>()((set) => ({
     });
   },
 
-  value: 2500,
+  value: 0,
   set(date, value) {
     set({ value });
     const d = dayjs(date);

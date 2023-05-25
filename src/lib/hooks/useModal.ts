@@ -1,13 +1,10 @@
 import { useModalStore } from 'lib/stores';
 
 export const useModal = <T extends Record<string, any>>(id: string) => {
-  return useModalStore((state) => {
-    const item = state.items.get(id);
-    return {
-      isOpen: !!item,
-      data: typeof item === 'boolean' ? undefined : (item as T),
-      show: (data?: Record<string, any>) => state.show(id, data),
-      hide: () => state.hide(id),
-    };
-  });
+  return useModalStore((state) => ({
+    isOpen: state.items.has(id),
+    data: ((item) => (typeof item === 'boolean' ? undefined : (item as T)))(state.items.get(id)),
+    show: (data?: Record<string, any>) => state.show(id, data),
+    hide: () => state.hide(id),
+  }));
 };

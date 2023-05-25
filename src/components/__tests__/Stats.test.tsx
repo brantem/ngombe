@@ -6,6 +6,10 @@ import Stats from 'components/Stats';
 import { goalStore, recordsStore } from 'lib/stores';
 
 describe('Stats', () => {
+  beforeAll(() => {
+    act(() => goalStore.setState({ value: 2500 }));
+  });
+
   it('should not show NaN when not ready', () => {
     render(<Stats />);
     expect(screen.getByTestId('stats-value').textContent).toEqual('0ml');

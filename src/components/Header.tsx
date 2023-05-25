@@ -1,6 +1,6 @@
 import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
-import { useDateStore, useGoalStore } from 'lib/stores';
+import { useGoalStore } from 'lib/stores';
 
 type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
   onClick?: () => void;
@@ -42,10 +42,9 @@ type GoalButtonProps = {
 
 const GoalButton = ({ isBackground }: GoalButtonProps) => {
   const modal = useModal('current-goal');
-  const date = useDateStore((state) => state.value);
   const goal = useGoalStore((state) => state.value);
 
-  if (modal.isOpen || (date && goal === 0)) return null;
+  if (modal.isOpen || goal === 0) return null;
 
   return (
     <Button isBackground={isBackground} onClick={() => modal.show()} data-testid="header-goal">

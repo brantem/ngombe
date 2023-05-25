@@ -3,12 +3,13 @@ import { act, renderHook } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import storage from 'lib/storage';
-import { recordsStore, useRecordsStore } from 'lib/stores';
+import { goalStore, recordsStore, useRecordsStore } from 'lib/stores';
 
 const timestamp = 1672506000000;
 
 describe('useRecordsStore', () => {
   beforeEach(() => {
+    act(() => goalStore.setState({ value: 2500 }));
     act(() => recordsStore.setState({ records: {} }));
   });
 

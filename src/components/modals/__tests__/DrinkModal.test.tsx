@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 
 import DrinkModal from 'components/modals/DrinkModal';
 
-import { useRecordsStore, useModalStore } from 'lib/stores';
+import { useDateStore, recordsStore, useRecordsStore, useModalStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -23,25 +23,81 @@ describe('DrinkModal', () => {
     };
   });
 
-  afterEach(() => {
+  beforeEach(() => {
+    const modal = renderHook(() => useModalStore());
+    act(() => modal.result.current.show('drink'));
+  });
+
+  afterEach(async () => {
     const modal = renderHook(() => useModalStore());
     act(() => modal.result.current.hide('drink'));
   });
 
   it('should add a record', async () => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('drink'));
+    const records = renderHook(() => useRecordsStore());
+    const drink = vi.spyOn(records.result.current, 'drink');
+
+    render(<DrinkModal />);
+    const value = screen.getByTestId('drink-modal-value');
+    const time = screen.getByTestId('drink-modal-time');
+
+    // clean -> dirty & invalid (value > constants.MAX_VALUE && time > now)
+    fireEvent.change(value, { target: { value: '10010000' } });
+    fireEvent.change(time, { target: { value: dayjs().add(1, 'minute').format('HH:mm') } });
+    act(() => screen.getByText('Drink').click());
+    expect(drink).not.toHaveBeenCalled();
+
+    // valid (value <= constants.MAX_VALUE && time <= now)
+    fireEvent.change(value, { target: { value: '500' } });
+    fireEvent.change(time, { target: { value: dayjs().format('HH:mm') } });
+    act(() => screen.getByText('Drink').click());
+    expect(drink).toHaveBeenCalledWith(dayjs().startOf('minute').valueOf(), 500);
+  });
+
+  it('should update a record', async () => {
+    const timestamp = dayjs().startOf('minute').subtract(1, 'minute').valueOf();
+
+    act(() => useModalStore.setState({ items: new Map().set('drink', { timestamp }) }));
+    act(() => recordsStore.setState({ records: { [timestamp]: 100 } }));
+
+    const records = renderHook(() => useRecordsStore());
+    const update = vi.spyOn(records.result.current, 'update');
+
+    render(<DrinkModal />);
+    fireEvent.change(screen.getByTestId('drink-modal-value'), { target: { value: '100200' } });
+    act(() => screen.getByText('Drink').click());
+    expect(update).toHaveBeenCalledWith(timestamp, 200);
+  });
+
+  it('should add a record to past date', async () => {
+    const time = dayjs().subtract(1, 'day').startOf('minute').add(1, 'minute');
+
+    const date = renderHook(() => useDateStore());
+    await act(() => date.result.current.set(time.format('YYYY-MM-DD')));
 
     const records = renderHook(() => useRecordsStore());
     const drink = vi.spyOn(records.result.current, 'drink');
 
     render(<DrinkModal />);
-    fireEvent.change(screen.getByTestId('drink-modal-value'), { target: { value: '500' } });
-    fireEvent.change(screen.getByTestId('drink-modal-time'), { target: { value: dayjs().format('HH:mm') } });
+    fireEvent.change(screen.getByTestId('drink-modal-time'), { target: { value: time.format('HH:mm') } });
     act(() => screen.getByText('Drink').click());
-    const date = new Date();
-    date.setHours(1, 1, 0, 0);
-    // expect(drink).toHaveBeenCalledWith(date.getTime(), 500); // TODO: not working
+    screen.debug();
+    expect(drink).toHaveBeenCalledWith(time.valueOf(), 100);
+
+    await act(() => date.result.current.set(undefined));
+  });
+
+  it('should support negative value', async () => {
+    const records = renderHook(() => useRecordsStore());
+    const drink = vi.spyOn(records.result.current, 'drink');
+
+    render(<DrinkModal />);
+    const value = screen.getByTestId('drink-modal-value');
+
+    fireEvent.keyDown(value, { key: '-' });
+    fireEvent.change(value, { target: { value: '-100' } });
+    act(() => screen.getByText('Drink').click());
+    expect(drink).toHaveBeenCalledWith(dayjs().startOf('minute').valueOf(), -100);
   });
 
   it('should hide time', async () => {

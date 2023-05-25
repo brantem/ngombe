@@ -11,16 +11,17 @@ const CurrentGoalModal = () => {
   const modal = useModal('current-goal');
   const { goal, setGoal } = useGoalStore((state) => ({ goal: state.value, setGoal: state.set }));
 
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<number>();
+  const isDirty = value !== undefined;
+  const v = isDirty ? value : goal;
 
-  const isValueInRange = (value: number) => value >= 100 && value <= constants.MAX_VALUE;
+  const isValueValid = (value: number) => value >= 100 && value <= constants.MAX_VALUE;
 
   const debouncedValue = useDebounce(value, 500);
   useEffect(() => {
     if (!debouncedValue) return;
-    const v = parseInt(debouncedValue);
-    if (!isValueInRange(v)) return;
-    setGoal(undefined, v);
+    if (!isValueValid(debouncedValue)) return;
+    setGoal(undefined, debouncedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
@@ -29,8 +30,8 @@ const CurrentGoalModal = () => {
       open={modal.isOpen}
       /* c8 ignore next 4 */
       onClose={() => {
-        setValue(undefined);
         modal.hide();
+        setValue(undefined);
       }}
       className="fixed right-0 top-0 left-0 z-[100]"
     >
@@ -41,40 +42,34 @@ const CurrentGoalModal = () => {
           <div
             className={cn(
               'bg-white shadow-sm rounded-full p-2 flex items-center space-x-2 border transition-all',
-              isValueInRange(parseInt(value || goal.toString()))
-                ? 'border-neutral-100'
-                : 'border-red-500 ring-1 ring-red-500',
+              isValueValid(v) ? 'border-neutral-100' : 'border-red-500 ring-1 ring-red-500',
             )}
           >
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100 disabled:bg-neutral-100 disabled:text-neutral-300"
-              onClick={() => {
-                const v = parseInt(value || goal.toString());
-                setValue((v - 100).toString());
-              }}
+              onClick={() => setValue(v - 100)}
               data-testid="current-goal-modal-decrease"
-              disabled={parseInt(value || goal.toString()) <= 100}
+              disabled={v <= 100}
             >
               -
             </button>
             <input
               type="number"
-              value={value === undefined ? goal : value}
-              onChange={(e) => setValue(e.target.value)}
+              value={v}
+              onChange={(e) => setValue(parseInt(e.target.value.slice(isDirty ? 0 : goal.toString().length)))}
               className="text-2xl font-extrabold text-neutral-700 flex-1 w-18 text-center outline-none bg-transparent"
               min={100}
               max={constants.MAX_VALUE}
               step={100}
               data-testid="current-goal-modal-input"
+              autoFocus
+              required
             />
             <button
               className="text-2xl flex-shrink-0 font-extrabold rounded-full text-cyan-500 h-9 w-9 pb-[2px] bg-cyan-100 disabled:bg-neutral-100 disabled:text-neutral-300"
-              onClick={() => {
-                const v = parseInt(value || goal.toString());
-                setValue((v + 100).toString());
-              }}
+              onClick={() => setValue(v + 100)}
               data-testid="current-goal-modal-increase"
-              disabled={parseInt(value || goal.toString()) >= constants.MAX_VALUE}
+              disabled={v >= constants.MAX_VALUE}
             >
               +
             </button>
