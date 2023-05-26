@@ -49,7 +49,8 @@ const GoalModal = () => {
             value={isDirty ? value : goal === 0 ? '' : goal}
             onChange={(e) => {
               if (goal === 0) return setValue(parseInt(e.target.value));
-              setValue(parseInt(e.target.value.slice(isDirty ? 0 : goal.toString().length)));
+              const _value = e.target.value.slice(isDirty ? 0 : goal.toString().length);
+              setValue(parseInt(_value === '0' ? e.target.value : _value));
             }}
             min={0}
             max={constants.MAX_VALUE}

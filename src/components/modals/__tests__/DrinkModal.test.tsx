@@ -84,6 +84,20 @@ describe('DrinkModal', () => {
     await act(() => app.result.current.setDate(undefined));
   });
 
+  it('should not replace the value if the first number is 0', async () => {
+    const records = renderHook(() => useRecordsStore());
+    const drink = vi.spyOn(records.result.current, 'drink');
+
+    render(<DrinkModal />);
+    const value = screen.getByTestId('drink-modal-value');
+
+    // 100 + 0 -> 1000
+    fireEvent.change(value, { target: { value: '1000' } });
+    expect(value).toHaveValue(1000);
+    act(() => screen.getByText('Drink').click());
+    expect(drink).toHaveBeenCalledWith(dayjs().startOf('minute').valueOf(), 1000);
+  });
+
   it('should support negative value', async () => {
     const records = renderHook(() => useRecordsStore());
     const drink = vi.spyOn(records.result.current, 'drink');
@@ -91,8 +105,10 @@ describe('DrinkModal', () => {
     render(<DrinkModal />);
     const value = screen.getByTestId('drink-modal-value');
 
+    // - + 100 -> -100
     fireEvent.keyDown(value, { key: '-' });
     fireEvent.change(value, { target: { value: '-100' } });
+    expect(value).toHaveValue(-100);
     act(() => screen.getByText('Drink').click());
     expect(drink).toHaveBeenCalledWith(dayjs().startOf('minute').valueOf(), -100);
   });

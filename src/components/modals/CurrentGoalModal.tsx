@@ -55,7 +55,10 @@ const CurrentGoalModal = () => {
             <input
               type="number"
               value={v}
-              onChange={(e) => setValue(parseInt(e.target.value.slice(isDirty ? 0 : goal.toString().length)))}
+              onChange={(e) => {
+                const _value = e.target.value.slice(isDirty ? 0 : goal.toString().length);
+                setValue(parseInt(_value === '0' ? e.target.value : _value));
+              }}
               className="text-2xl font-extrabold text-neutral-700 flex-1 w-18 text-center outline-none bg-transparent"
               min={100}
               max={constants.MAX_VALUE}

@@ -36,7 +36,8 @@ const DrinkModal = () => {
   const [value, setValue] = useState<string>();
   const [time, setTime] = useState<string>(values.time);
 
-  const v = value === undefined ? values.value : parseInt(value);
+  const isValueDirty = value !== undefined;
+  const v = isValueDirty ? parseInt(value) : values.value;
 
   const isValueValid = (value: number) => value <= constants.MAX_VALUE;
 
@@ -85,9 +86,12 @@ const DrinkModal = () => {
               className={/* c8 ignore next */ !hideTime ? 'w-36' : 'w-[304px] text-center'}
               type="number"
               data-testid="drink-modal-value"
-              value={value === undefined ? values.value : value}
+              value={isValueDirty ? value : values.value}
               onKeyDown={(e) => e.key === '-' && setValue('-')}
-              onChange={(e) => setValue(e.target.value.slice(value === undefined ? values.value.toString().length : 0))}
+              onChange={(e) => {
+                const _value = e.target.value.slice(isValueDirty ? 0 : values.value.toString().length);
+                setValue(_value === '0' ? e.target.value : _value);
+              }}
               max={constants.MAX_VALUE}
               autoFocus
               required

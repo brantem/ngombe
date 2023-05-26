@@ -96,4 +96,13 @@ describe('CurrentGoalModal', () => {
     act(() => vi.advanceTimersByTime(500));
     expect(set).toHaveBeenCalledWith(undefined, 2501);
   });
+
+  it('should not replace the value if the first number is 0', async () => {
+    render(<CurrentGoalModal />);
+    const input = screen.getByTestId('current-goal-modal-input');
+
+    // 2500 + 0 -> 25000
+    fireEvent.change(input, { target: { value: '25000' } });
+    expect(input).toHaveValue(25000);
+  });
 });

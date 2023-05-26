@@ -71,4 +71,15 @@ describe('GoalModal', () => {
     act(() => button.click());
     expect(set).toHaveBeenCalledWith(undefined, 500);
   });
+
+  it('should not replace the value if the first number is 0', async () => {
+    act(() => goalStore.setState({ value: 2500 }));
+
+    render(<GoalModal />);
+    const input = screen.getByTestId('goal-modal-value');
+
+    // 2500 + 0 -> 25000
+    fireEvent.change(input, { target: { value: '25000' } });
+    expect(input).toHaveValue(25000);
+  });
 });
