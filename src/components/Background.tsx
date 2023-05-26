@@ -1,12 +1,12 @@
 import { useCurrentHeight } from 'lib/hooks';
-import { useDateStore, useGoalStore, useRecordsStore } from 'lib/stores';
+import { useAppStore, useGoalStore, useRecordsStore } from 'lib/stores';
 import { calcPercentage, cn } from 'lib/helpers';
 
 type BackgroundProps = React.ComponentPropsWithoutRef<'div'>;
 
 const Background = ({ className, children, ...props }: BackgroundProps) => {
   const height = useCurrentHeight();
-  const date = useDateStore((state) => state.value);
+  const date = useAppStore((state) => state.date);
   const goal = useGoalStore((state) => state.value);
   const percentage = useRecordsStore((state) => {
     const value = state.calcTotalValue();

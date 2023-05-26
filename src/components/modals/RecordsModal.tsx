@@ -4,13 +4,13 @@ import dayjs from 'dayjs';
 
 import * as fonts from 'lib/fonts';
 import { useModal } from 'lib/hooks';
-import { useDateStore, useGoalStore, useRecordsStore } from 'lib/stores';
+import { useAppStore, useGoalStore, useRecordsStore } from 'lib/stores';
 import { calcPercentage } from 'lib/helpers';
 
 export const Header = () => {
   const modal = useModal('goal');
   const inputRef = useRef<HTMLInputElement>(null);
-  const { date, setDate } = useDateStore((state) => ({ date: state.value, setDate: state.set }));
+  const { date, setDate } = useAppStore((state) => ({ date: state.date, setDate: state.setDate }));
   const goal = useGoalStore((state) => state.value);
   const totalValue = useRecordsStore((state) => state.calcTotalValue());
 
@@ -135,7 +135,7 @@ export const Record = ({ timestamp, value, isLast }: RecordProps) => {
 
 const RecordsModal = () => {
   const modal = useModal('records');
-  const setDate = useDateStore((state) => state.set);
+  const setDate = useAppStore((state) => state.setDate);
   const records = useRecordsStore((state) => state.records);
   const keys = Object.keys(records);
 

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 
 import DrinkModal from 'components/modals/DrinkModal';
 
-import { useDateStore, recordsStore, useRecordsStore, useModalStore } from 'lib/stores';
+import { useAppStore, recordsStore, useRecordsStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -24,13 +24,11 @@ describe('DrinkModal', () => {
   });
 
   beforeEach(() => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('drink'));
+    act(() => useAppStore.setState({ items: { drink: true } }));
   });
 
   afterEach(async () => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.hide('drink'));
+    act(() => useAppStore.setState({ items: {} }));
   });
 
   it('should add a record', async () => {
@@ -57,7 +55,7 @@ describe('DrinkModal', () => {
   it('should update a record', async () => {
     const timestamp = dayjs().startOf('minute').subtract(1, 'minute').valueOf();
 
-    act(() => useModalStore.setState({ items: new Map().set('drink', { timestamp }) }));
+    act(() => useAppStore.setState({ items: { drink: { timestamp } } }));
     act(() => recordsStore.setState({ records: { [timestamp]: 100 } }));
 
     const records = renderHook(() => useRecordsStore());
@@ -72,8 +70,8 @@ describe('DrinkModal', () => {
   it('should add a record to past date', async () => {
     const time = dayjs().subtract(1, 'day').startOf('minute').add(1, 'minute');
 
-    const date = renderHook(() => useDateStore());
-    await act(() => date.result.current.set(time.format('YYYY-MM-DD')));
+    const app = renderHook(() => useAppStore());
+    await act(() => app.result.current.setDate(time.format('YYYY-MM-DD')));
 
     const records = renderHook(() => useRecordsStore());
     const drink = vi.spyOn(records.result.current, 'drink');
@@ -83,7 +81,7 @@ describe('DrinkModal', () => {
     act(() => screen.getByText('Drink').click());
     expect(drink).toHaveBeenCalledWith(time.valueOf(), 100);
 
-    await act(() => date.result.current.set(undefined));
+    await act(() => app.result.current.setDate(undefined));
   });
 
   it('should support negative value', async () => {
@@ -100,8 +98,7 @@ describe('DrinkModal', () => {
   });
 
   it('should hide time', async () => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('drink', { hideTime: true }));
+    act(() => useAppStore.setState({ items: { drink: { hideTime: true } } }));
 
     render(<DrinkModal />);
     expect(screen.queryByTestId('drink-modal-time')).not.toBeInTheDocument();

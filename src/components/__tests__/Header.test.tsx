@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import Header from 'components/Header';
 
-import { useModalStore, goalStore } from 'lib/stores';
+import { useAppStore, goalStore } from 'lib/stores';
 
 describe('Header', () => {
   beforeEach(() => {
@@ -16,12 +16,12 @@ describe('Header', () => {
   });
 
   it('should open records modal', () => {
-    const { result } = renderHook(() => useModalStore());
-    const show = vi.spyOn(result.current, 'show');
+    const { result } = renderHook(() => useAppStore());
+    const setItem = vi.spyOn(result.current, 'setItem');
 
     render(<Header />);
     act(() => screen.getByTestId('header-records').click());
-    expect(show).toHaveBeenCalledWith('records', undefined);
+    expect(setItem).toHaveBeenCalledWith('records', true);
   });
 
   it('should hide goal button if goal === 0', () => {
@@ -32,11 +32,11 @@ describe('Header', () => {
   });
 
   it('should open goal modal', async () => {
-    const { result } = renderHook(() => useModalStore());
-    const show = vi.spyOn(result.current, 'show').mockImplementationOnce(() => {});
+    const { result } = renderHook(() => useAppStore());
+    const setItem = vi.spyOn(result.current, 'setItem').mockImplementationOnce(() => {});
 
     render(<Header />);
     act(() => screen.getByTestId('header-goal').click());
-    expect(show).toHaveBeenCalledWith('current-goal', undefined);
+    expect(setItem).toHaveBeenCalledWith('current-goal', true);
   });
 });

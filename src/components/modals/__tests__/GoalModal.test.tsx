@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import GoalModal from 'components/modals/GoalModal';
 
-import { useModalStore, useGoalStore, goalStore } from 'lib/stores';
+import { useAppStore, useGoalStore, goalStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -23,13 +23,11 @@ describe('GoalModal', () => {
   });
 
   beforeEach(() => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('goal'));
+    act(() => useAppStore.setState({ items: { goal: true } }));
   });
 
   afterEach(() => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.hide('goal'));
+    act(() => useAppStore.setState({ items: {} }));
   });
 
   it('should be able to set goal', async () => {

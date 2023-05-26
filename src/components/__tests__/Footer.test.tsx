@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import Footer from 'components/Footer';
 
-import { useModalStore } from 'lib/stores';
+import { useAppStore } from 'lib/stores';
 
 describe('Footer', () => {
   it('should match snapshot', () => {
@@ -12,11 +12,11 @@ describe('Footer', () => {
   });
 
   it('should open drink modal', () => {
-    const { result } = renderHook(() => useModalStore());
-    const show = vi.spyOn(result.current, 'show');
+    const { result } = renderHook(() => useAppStore());
+    const setItem = vi.spyOn(result.current, 'setItem');
 
     render(<Footer />);
     act(() => screen.getByText('Drink').click());
-    expect(show).toHaveBeenCalledWith('drink', { hideTime: true });
+    expect(setItem).toHaveBeenCalledWith('drink', { hideTime: true });
   });
 });

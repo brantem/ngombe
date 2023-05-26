@@ -6,7 +6,7 @@ import Input from 'components/Input';
 
 import * as fonts from 'lib/fonts';
 import { useModal } from 'lib/hooks';
-import { useDateStore, useRecordsStore } from 'lib/stores';
+import { useAppStore, useRecordsStore } from 'lib/stores';
 import { cn } from 'lib/helpers';
 import * as constants from 'data/constants';
 
@@ -18,7 +18,7 @@ type Data = {
 const DrinkModal = () => {
   const modal = useModal<Data>('drink');
   const hideTime = modal.data?.hideTime;
-  const date = useDateStore((state) => state.value);
+  const date = useAppStore((state) => state.date);
   const { values, upsert } = useRecordsStore((state) => {
     const _timestamp = modal.data?.timestamp;
     return {

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 
 import RecordsModal, { Header, MissedDrink, Record } from 'components/modals/RecordsModal';
 
-import { useDateStore, goalStore, useModalStore, recordsStore, useRecordsStore, useGoalStore } from 'lib/stores';
+import { useAppStore, goalStore, recordsStore, useRecordsStore } from 'lib/stores';
 
 vi.mock('next/font/google', () => ({
   Nunito() {
@@ -35,35 +35,35 @@ describe('RecordsModal/Header', () => {
   });
 
   it('should change date', async () => {
-    const date = renderHook(() => useDateStore());
-    const set = vi.spyOn(date.result.current, 'set');
+    const app = renderHook(() => useAppStore());
+    const setDate = vi.spyOn(app.result.current, 'setDate');
 
     render(<Header />);
     const input = screen.getByTestId('records-modal-date');
 
     expect(screen.getByText(dayjs().format('D MMM YYYY'))).toBeInTheDocument();
     await waitFor(() => fireEvent.change(input, { target: { value: '2023-01-01' } }));
-    expect(set).toHaveBeenCalledWith('2023-01-01');
+    expect(setDate).toHaveBeenCalledWith('2023-01-01');
     expect(screen.getByText('1 Jan 2023')).toBeInTheDocument();
   });
 
   it('should open goal modal', () => {
-    const modal = renderHook(() => useModalStore());
-    const show = vi.spyOn(modal.result.current, 'show');
+    const app = renderHook(() => useAppStore());
+    const setItem = vi.spyOn(app.result.current, 'setItem');
 
     render(<Header />);
     act(() => screen.getByTestId('records-modal-stats').click());
-    expect(show).toHaveBeenCalledWith('goal', undefined);
+    expect(setItem).toHaveBeenCalledWith('goal', true);
   });
 });
 
 test('RecordsModal/MissedDrink', () => {
-  const modal = renderHook(() => useModalStore());
-  const show = vi.spyOn(modal.result.current, 'show');
+  const app = renderHook(() => useAppStore());
+  const setItem = vi.spyOn(app.result.current, 'setItem');
 
   render(<MissedDrink />);
   act(() => screen.getByText('Missed Drink').click());
-  expect(show).toHaveBeenCalledWith('drink', undefined);
+  expect(setItem).toHaveBeenCalledWith('drink', true);
 });
 
 describe('RecordsModal/Record', () => {
@@ -80,12 +80,12 @@ describe('RecordsModal/Record', () => {
   });
 
   it('should open drink modal to update record', () => {
-    const modal = renderHook(() => useModalStore());
-    const show = vi.spyOn(modal.result.current, 'show');
+    const app = renderHook(() => useAppStore());
+    const setItem = vi.spyOn(app.result.current, 'setItem');
 
     render(<Record timestamp={timestamp} value={100} />);
     act(() => screen.getByTestId('records-modal-update').click());
-    expect(show).toHaveBeenCalledWith('drink', { timestamp, hideTime: true });
+    expect(setItem).toHaveBeenCalledWith('drink', { timestamp, hideTime: true });
   });
 
   it('should remove a record', () => {
@@ -108,13 +108,11 @@ describe('RecordsModal', () => {
   });
 
   beforeEach(() => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('records'));
+    act(() => useAppStore.setState({ items: { records: true } }));
   });
 
   afterEach(() => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.hide('records'));
+    act(() => useAppStore.setState({ items: {} }));
   });
 
   it('should show empty list', () => {
@@ -132,11 +130,11 @@ describe('RecordsModal', () => {
   });
 
   it('should reset date modal is closed', () => {
-    const date = renderHook(() => useDateStore());
-    const set = vi.spyOn(date.result.current, 'set').mockImplementationOnce(() => {});
+    const app = renderHook(() => useAppStore());
+    const setDate = vi.spyOn(app.result.current, 'setDate').mockImplementationOnce(() => {});
 
     render(<RecordsModal />);
     act(() => screen.getByTestId('records-modal-close').click());
-    expect(set).toHaveBeenCalledWith(undefined);
+    expect(setDate).toHaveBeenCalledWith(undefined);
   });
 });

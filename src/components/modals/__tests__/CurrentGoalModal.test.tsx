@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 
 import CurrentGoalModal from 'components/modals/CurrentGoalModal';
 
-import { goalStore, useGoalStore, useModalStore } from 'lib/stores';
+import { useAppStore, goalStore, useGoalStore } from 'lib/stores';
 import * as constants from 'data/constants';
 
 vi.mock('next/font/google', () => ({
@@ -28,16 +28,12 @@ describe('CurrentGoalModal', () => {
   });
 
   beforeEach(() => {
+    act(() => useAppStore.setState({ items: { 'current-goal': true } }));
     act(() => goalStore.setState({ value: 2500 }));
-
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.show('current-goal'));
   });
 
   afterEach(() => {
-    const modal = renderHook(() => useModalStore());
-    act(() => modal.result.current.hide('current-goal'));
-
+    act(() => useAppStore.setState({ items: {} }));
     vi.restoreAllMocks();
   });
 

@@ -1,15 +1,15 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { useLoadStore, useModalStore, useGoalStore, useRecordsStore } from 'lib/stores';
-import { useDebounce, useModal } from 'lib/hooks';
+import { useLoadStore, useAppStore, useGoalStore, useRecordsStore } from 'lib/stores';
+import { useDebounce } from 'lib/hooks';
 import { calcPercentage } from 'lib/helpers';
 
 import 'styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   useLoadStore();
-  const isSomeModalWithOverlayOpen = useModalStore((state) => ['goal', 'drink'].some((id) => state.items.has(id)));
+  const isSomeModalWithOverlayOpen = useAppStore((state) => ['goal', 'drink'].some((id) => state.items.has(id)));
   const goal = useGoalStore((state) => state.value);
   const percentage = useRecordsStore((state) => calcPercentage(state.calcTotalValue(), goal));
   const debouncedPercentage = useDebounce(percentage, 1000);

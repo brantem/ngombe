@@ -5,12 +5,12 @@ import Input from 'components/Input';
 
 import * as fonts from 'lib/fonts';
 import { useModal } from 'lib/hooks';
-import { useDateStore, useGoalStore } from 'lib/stores';
+import { useAppStore, useGoalStore } from 'lib/stores';
 import * as constants from 'data/constants';
 
 const GoalModal = () => {
   const modal = useModal('goal');
-  const date = useDateStore((state) => state.value);
+  const date = useAppStore((state) => state.date);
   const { goal, setGoal } = useGoalStore((state) => ({ goal: state.value, setGoal: state.set }));
 
   const [value, setValue] = useState<number>();

@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 
 import { useModal } from 'lib/hooks';
 
-describe('useModalStore', () => {
+describe('useAppStore', () => {
   it('should run correctly', () => {
     const { result } = renderHook(() => useModal('modal-1'));
     expect(result.current.isOpen).toEqual(false);

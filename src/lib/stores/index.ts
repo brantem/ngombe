@@ -11,7 +11,6 @@ export const useLoadStore = () => {
 };
 /* c8 ignore stop */
 
-export * from 'lib/stores/modal';
-export * from 'lib/stores/date';
+export * from 'lib/stores/app';
 export * from 'lib/stores/goal';
 export * from 'lib/stores/records';
