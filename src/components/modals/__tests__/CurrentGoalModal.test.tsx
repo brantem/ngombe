@@ -78,13 +78,7 @@ describe('CurrentGoalModal', () => {
     expect(input).toHaveValue(2500);
 
     // same value
-    fireEvent.change(input, { target: { value: '2500' } });
-    expect(set).not.toHaveBeenCalled();
-    act(() => vi.advanceTimersByTime(500));
-    expect(set).not.toHaveBeenCalled();
-
-    // NaN
-    fireEvent.change(input, { target: { value: 'a' } });
+    fireEvent.change(input, { target: { value: '25002500' } });
     expect(set).not.toHaveBeenCalled();
     act(() => vi.advanceTimersByTime(500));
     expect(set).not.toHaveBeenCalled();

@@ -19,8 +19,7 @@ const CurrentGoalModal = () => {
 
   const debouncedValue = useDebounce(value, 500);
   useEffect(() => {
-    if (!debouncedValue) return;
-    if (!isValueValid(debouncedValue)) return;
+    if (!debouncedValue || debouncedValue === goal || !isValueValid(debouncedValue)) return;
     setGoal(undefined, debouncedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);

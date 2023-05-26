@@ -81,7 +81,6 @@ describe('DrinkModal', () => {
     render(<DrinkModal />);
     fireEvent.change(screen.getByTestId('drink-modal-time'), { target: { value: time.format('HH:mm') } });
     act(() => screen.getByText('Drink').click());
-    screen.debug();
     expect(drink).toHaveBeenCalledWith(time.valueOf(), 100);
 
     await act(() => date.result.current.set(undefined));

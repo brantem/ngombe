@@ -1,4 +1,5 @@
-import { renderHook, act, render, screen } from '@testing-library/react';
+import dayjs from 'dayjs';
+import { renderHook, act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import RecordsModal, { Header, MissedDrink, Record } from 'components/modals/RecordsModal';
@@ -31,6 +32,19 @@ describe('RecordsModal/Header', () => {
 
     render(<Header />);
     expect(screen.getByText('100ml')).toBeInTheDocument();
+  });
+
+  it('should change date', async () => {
+    const date = renderHook(() => useDateStore());
+    const set = vi.spyOn(date.result.current, 'set');
+
+    render(<Header />);
+    const input = screen.getByTestId('records-modal-date');
+
+    expect(screen.getByText(dayjs().format('D MMM YYYY'))).toBeInTheDocument();
+    await waitFor(() => fireEvent.change(input, { target: { value: '2023-01-01' } }));
+    expect(set).toHaveBeenCalledWith('2023-01-01');
+    expect(screen.getByText('1 Jan 2023')).toBeInTheDocument();
   });
 
   it('should open goal modal', () => {

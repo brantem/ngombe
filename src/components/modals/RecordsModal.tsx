@@ -24,8 +24,12 @@ export const Header = () => {
           value={dayjs(date).format('YYYY-MM-DD')}
           onChange={(e) => setDate(e.target.value)}
           max={dayjs().format('YYYY-MM-DD')}
+          data-testid="records-modal-date"
         />
-        <div className="flex items-center justify-center" onClick={() => inputRef.current?.showPicker()}>
+        <div
+          className="flex items-center justify-center"
+          onClick={() => /* c8 ignore next */ inputRef.current?.showPicker()}
+        >
           <h1 className="text-2xl font-extrabold">{dayjs(date).format('D MMM YYYY')}</h1>
           <svg
             xmlns="http://www.w3.org/2000/svg"
