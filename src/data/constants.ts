@@ -1,1 +1,3 @@
 export const MAX_VALUE = 9999;
+
+export const NOT_SAFE_TO_PAINT_STATUS_BAR = 'NOT_SAFE_TO_PAINT_STATUS_BAR';

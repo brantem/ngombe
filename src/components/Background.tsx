@@ -1,12 +1,21 @@
+import { useEffect } from 'react';
+
 import { useCurrentHeight } from 'lib/hooks';
 import { useAppStore, useGoalStore, useRecordsStore } from 'lib/stores';
 import { calcPercentage, cn } from 'lib/helpers';
+import * as constants from 'data/constants';
 
 type BackgroundProps = React.ComponentPropsWithoutRef<'div'>;
 
 const Background = ({ className, children, ...props }: BackgroundProps) => {
   const height = useCurrentHeight();
-  const date = useAppStore((state) => state.date);
+  const { date, notSafeToPaint, safeToPaint } = useAppStore((state) => {
+    return {
+      date: state.date,
+      notSafeToPaint: () => state.setItem(constants.NOT_SAFE_TO_PAINT_STATUS_BAR, true),
+      safeToPaint: () => state.deleteItem(constants.NOT_SAFE_TO_PAINT_STATUS_BAR),
+    };
+  });
   const goal = useGoalStore((state) => state.value);
   const percentage = useRecordsStore((state) => {
     const value = state.calcTotalValue();
@@ -15,10 +24,16 @@ const Background = ({ className, children, ...props }: BackgroundProps) => {
     return value > 0 ? 100 : 0;
   });
 
+  useEffect(() => {
+    if (percentage < 100) return;
+    notSafeToPaint();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [percentage]);
+
   return (
     <div
       className={cn(
-        'absolute top-0 right-0 left-0 bg-white h-full wave transition-[max-height] ease-in duration-1000',
+        'absolute top-0 right-0 left-0 bg-white h-full wave transition-[max-height] ease duration-[750ms]',
         className,
       )}
       {...props}
@@ -26,6 +41,7 @@ const Background = ({ className, children, ...props }: BackgroundProps) => {
         animationPlayState: percentage >= 100 ? 'stopped' : 'running',
         maxHeight: 100 - Math.min(percentage, 100) + '%',
       }}
+      onTransitionEnd={safeToPaint}
     >
       <div
         className="fixed inset-0 grid grid-rows-3 h-screen w-screen"
