@@ -18,6 +18,7 @@ const timestamp = Date.now();
 
 describe('RecordsModal/Header', () => {
   beforeEach(() => {
+    act(() => useAppStore.setState({ date: undefined }));
     act(() => goalStore.setState({ value: 2500 }));
     act(() => recordsStore.setState({ records: { [timestamp]: 100 } }));
   });
@@ -48,12 +49,25 @@ describe('RecordsModal/Header', () => {
   });
 
   it('should open goal modal', () => {
+    act(() => useAppStore.setState({ date: '2023-01-01' }));
+
     const app = renderHook(() => useAppStore());
     const setItem = vi.spyOn(app.result.current, 'setItem');
 
     render(<Header />);
+    expect(screen.getByTestId('records-modal-goal')).toBeInTheDocument();
     act(() => screen.getByTestId('records-modal-stats').click());
     expect(setItem).toHaveBeenCalledWith('goal', true);
+  });
+
+  it('should not show edit goal button if date === undefined', () => {
+    const app = renderHook(() => useAppStore());
+    const setItem = vi.spyOn(app.result.current, 'setItem');
+
+    render(<Header />);
+    expect(screen.queryByTestId('records-modal-goal')).not.toBeInTheDocument();
+    act(() => screen.getByTestId('records-modal-stats').click());
+    expect(setItem).not.toHaveBeenCalledWith('goal', true);
   });
 });
 
