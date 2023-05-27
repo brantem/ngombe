@@ -7,5 +7,6 @@ export const cn = (...inputs: ClassValue[]) => {
 };
 
 export const calcPercentage = (a: number, b: number) => {
+  if (a === 0 || b === 0) return 0;
   return Math.round((a / b) * 100);
 };
