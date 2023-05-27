@@ -51,6 +51,7 @@ const DrinkModal = () => {
 
   const reset = () => {
     setValue(undefined);
+    setTime(dayjs().format('HH:mm'));
   };
 
   return (
