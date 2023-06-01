@@ -15,15 +15,6 @@ describe('Header', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('should open records modal', () => {
-    const { result } = renderHook(() => useAppStore());
-    const setItem = vi.spyOn(result.current, 'setItem');
-
-    render(<Header />);
-    act(() => screen.getByTestId('header-records').click());
-    expect(setItem).toHaveBeenCalledWith('records', true);
-  });
-
   it('should hide goal button if goal === 0', () => {
     act(() => goalStore.setState({ value: 0 }));
 

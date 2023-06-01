@@ -6,14 +6,8 @@ exports[`Header > should match snapshot 1`] = `
     class="w-full px-4 pt-4"
   >
     <div
-      class="max-w-lg w-full mx-auto flex justify-between font-bold"
+      class="max-w-lg w-full mx-auto flex justify-end font-bold"
     >
-      <button
-        class="h-9 px-3 rounded-full border shadow-sm bg-white border-neutral-100 text-cyan-500"
-        data-testid="header-records"
-      >
-        Records
-      </button>
       <button
         class="h-9 px-3 rounded-full border shadow-sm bg-white border-neutral-100 text-cyan-500"
         data-testid="header-goal"

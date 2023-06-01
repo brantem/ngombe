@@ -2,40 +2,6 @@ import { cn } from 'lib/helpers';
 import { useModal } from 'lib/hooks';
 import { useGoalStore } from 'lib/stores';
 
-type ButtonProps = React.ComponentPropsWithoutRef<'button'> & {
-  onClick?: () => void;
-  isBackground?: boolean;
-};
-
-const Button = ({ isBackground, ...props }: ButtonProps) => {
-  return (
-    <button
-      className={cn(
-        'h-9 px-3 rounded-full border shadow-sm',
-        /* c8 ignore next 3 */
-        isBackground
-          ? 'bg-neutral-100 border-neutral-200 text-neutral-500'
-          : 'bg-white border-neutral-100 text-cyan-500',
-      )}
-      {...props}
-    />
-  );
-};
-
-type RecordsButtonProps = {
-  isBackground?: boolean;
-};
-
-const RecordsButton = ({ isBackground }: RecordsButtonProps) => {
-  const modal = useModal('records');
-
-  return (
-    <Button isBackground={isBackground} onClick={() => modal.show()} data-testid="header-records">
-      Records
-    </Button>
-  );
-};
-
 type GoalButtonProps = {
   isBackground?: boolean;
 };
@@ -47,9 +13,19 @@ const GoalButton = ({ isBackground }: GoalButtonProps) => {
   if (modal.isOpen || goal === 0) return null;
 
   return (
-    <Button isBackground={isBackground} onClick={() => modal.show()} data-testid="header-goal">
+    <button
+      className={cn(
+        'h-9 px-3 rounded-full border shadow-sm',
+        /* c8 ignore next 3 */
+        isBackground
+          ? 'bg-neutral-100 border-neutral-200 text-neutral-500'
+          : 'bg-white border-neutral-100 text-cyan-500',
+      )}
+      onClick={() => modal.show()}
+      data-testid="header-goal"
+    >
       {/* c8 ignore next */ goal > 0 ? `${goal}ml` : <>&nbsp;</>}
-    </Button>
+    </button>
   );
 };
 
@@ -60,9 +36,7 @@ type HeaderProps = {
 const Header = ({ isBackground }: HeaderProps) => {
   return (
     <header className="w-full px-4 pt-4">
-      <div className="max-w-lg w-full mx-auto flex justify-between font-bold">
-        <RecordsButton isBackground={isBackground} />
-
+      <div className="max-w-lg w-full mx-auto flex justify-end font-bold">
         <GoalButton isBackground={isBackground} />
       </div>
     </header>
